@@ -4,50 +4,26 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Spaceship from './spaceship';
 import Planet from './planet';
 import EnemySpaceship from './enemy_spaceship';
+import Bullet from './bullet';
+import powerUp from './powerups';
+import shootBullets from './shoot_bullets';
+import enemySpacestation from './enemy_spacestation';
+import Particles from './particles';
 
 
 //----------------------------------------Functions------------------------------------------------------//
 
-
+// Function that adds the skybox into the scene 
 function skybox() {
-    const cubeTextureLoader = new THREE.CubeTextureLoader();
-    scene.background = cubeTextureLoader.setPath("./assets/images/space_skybox/").load(["right.png",
-        "left.png",
-        "top.png",
-        "bottom.png",
-        "front.png",
-        "back.png"
-    ]);
+  const cubeTextureLoader = new THREE.CubeTextureLoader();
+  scene.background = cubeTextureLoader.setPath("./assets/images/space_skybox/").load(["right.png",
+    "left.png",
+    "top.png",
+    "bottom.png",
+    "front.png",
+    "back.png"
+  ]);
 }
-
-
-
-// Loading a space station in the world
-function loadSpaceStation() {
-    const spaceStationLoader = new GLTFLoader();
-    spaceStationLoader.load(
-        './assets/objects/space_station/scene.gltf',
-        (gltf) => {
-            const spaceStation = gltf.scene;
-
-            spaceStation.scale.set(2, 2, 2);
-            spaceStation.position.set(-100, 50, -50);
-
-            scene.add(spaceStation);
-        },
-        (xhr) => {
-            // Loading progress callback
-            console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-        },
-        (error) => {
-            // Error callback
-            console.error('Error loading GLTF model', error);
-        }
-    );
-}
-
-
-
 
 //--------------------------------------------------------------------------------------------------------//
 
@@ -65,6 +41,7 @@ const firstPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / wi
 let isthirdPersonCamera = true;                             // Boolean flag to track the active camera
 
 
+
 // Just to test and to move around using the camera at (0,0)
 const orbit = new OrbitControls(thirdPersonCamera, renderer.domElement);
 orbit.update();
@@ -73,21 +50,30 @@ orbit.update();
 
 // loading the skybox, earth, moon and the spaceship in the scene
 skybox();
-loadSpaceStation();
 const planet = new Planet(scene);
 const spaceship = new Spaceship(scene);
-const enemy_spaceship = new EnemySpaceship(scene);
+
+
+// loading the 3 enemy station bases
+const enemyStationOne = new enemySpacestation(scene, -100,50,-50);
+const enemyStationTwo = new enemySpacestation(scene, 0,100,400);
+const enemyStationThree = new enemySpacestation(scene, 300,0,-150);
+
+// loading the enemy spaceship(s)
+const enemySpaceshipOne = new EnemySpaceship(scene,-10,0,-10);
+const enemySpaceshipTwo = new EnemySpaceship(scene,0,95,375);
+const enemySpaceshipThree = new EnemySpaceship(scene,295,-5,-140);
+
+
+// creating the red particles in background
+const particles = new Particles(scene);
+particles.createStars(); 
+
 
 // adding directional light from the sun which is on far right - work in progress
-const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
-directionalLight.position.set(1000,0,0);
-scene.add( directionalLight );
-/*
-const lightTarget = new THREE.Object3D();
-scene.add( lightTarget);
-directionalLight.target = lightTarget;
-lightTarget.position.set(150,0,50);*/
-
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(1000, 0, 0);
+scene.add(directionalLight);
 
 
 // adding some ambient light to the scene
@@ -101,25 +87,48 @@ thirdPersonCamera.position.y = 1;
 firstPersonCamera.position.y = 0.9;
 firstPersonCamera.position.z = 1;
 
+// adding power ups (for later)
+/*
+new powerUp(scene, 'health',5,0,-5);
+new powerUp(scene, 'shield',-5,0,-5);
+new powerUp(scene, 'speed_boost',0,0,-5);
+*/
+
+/*document.addEventListener('keydown', (event) => {
+  if (event.key === 'm') {
+    shoot = new shootBullets(scene, spaceship.position.x, spaceship.position.y, spaceship.z);
+  }
+});*/
+
+
 
 // Animating 
 function animate() {
-    requestAnimationFrame(animate);
-   
-    // updating planet and moon position
-    planet.update();     
+  requestAnimationFrame(animate);
 
-    // rendering according to the camera type
-    if (isthirdPersonCamera) {
-        renderer.render(scene, thirdPersonCamera);
-    } else {
-        renderer.render(scene, firstPersonCamera);
-    }
+  // updating planet and moon position
+  planet.update();
+
+  // animating the red particles 
+  particles.animateStars();
+
+
+  /*
+  if (shoot) {
+    shoot.shootupdate();
+  }*/
+
+
+  // rendering according to the camera type
+  if (isthirdPersonCamera) {
+    renderer.render(scene, thirdPersonCamera);
+  } else {
+    renderer.render(scene, firstPersonCamera);
+  }
 
 }
 
 animate();
-
 
 
 //---------------------------------Event listeners for keyboard and mouse input------------------------------------------------------------//
@@ -128,8 +137,8 @@ animate();
 
 // takes care of resizing when we open or close the console
 window.addEventListener('resize', function () {
-    thirdPersonCamera.aspect = window.innerWidth / window.innerHeight;
-    thirdPersonCamera.updateProjectionMatrix();
+  thirdPersonCamera.aspect = window.innerWidth / window.innerHeight;
+  thirdPersonCamera.updateProjectionMatrix();
 });
 
 

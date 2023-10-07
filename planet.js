@@ -1,18 +1,15 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-
 class Planet {
     constructor(scene) {
-
         this.group = new THREE.Group();
         this.moon = new THREE.Object3D();
         this.earth = new THREE.Object3D();
         this.loadEarth();
         this.loadMoon();
-        this.group.position.set(150,0,50);
+        this.group.position.set(150, 0, 50);
         scene.add(this.group);
-
     }
 
     // loading moon in the world
@@ -23,7 +20,10 @@ class Planet {
             (gltf) => {
                 this.moon = gltf.scene;
                 this.moon.scale.set(15, 15, 15);
-                this.moon.position.set(300,400,0);
+
+                //the moon's position relative to the Earth
+                this.moon.position.set(300, 400, -150); // (initially z was 0)
+
                 this.earth.add(this.moon);
             },
             (xhr) => {
@@ -64,9 +64,11 @@ class Planet {
         }
 
         if (this.moon) {
+            // rotating the moon around the earth which is the parent object
             this.moon.rotation.y += 0.01;
         }
     }
 }
 
 export default Planet;
+

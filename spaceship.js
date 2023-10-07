@@ -5,12 +5,30 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 class Spaceship {
     constructor(scene) {
         this.group = new THREE.Group();
-
         this.health = 100;
+        this.shield = 0;
         this.loadSpaceship();
         this.position = new THREE.Vector3(0, 0, 0);
         scene.add(this.group);                      // loading, setting initial position of the spaceship and adding it to the scene
     }
+
+    moveForward(){
+
+    }
+
+    moveBackward(){
+
+    }
+
+    moveRight(){
+
+    }
+
+    moveLeft(){
+
+    }
+
+    
 
 
     loadSpaceship() {

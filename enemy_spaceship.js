@@ -3,12 +3,14 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 
 class enemySpaceship {
-    constructor(scene) {
+    constructor(scene,x,y,z) {
         this.group = new THREE.Group();
-
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.health = 100;
         this.loadSpaceship();
-        this.group.position.set(-10,0,-10);
+        this.group.position.set(this.x,this.y,this.z);
         scene.add(this.group);                      // loading, setting initial position of the spaceship and adding it to the scene
     }
 
