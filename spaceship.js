@@ -2,16 +2,24 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 
+
 class Spaceship {
     constructor(scene) {
         this.group = new THREE.Group();
 
         this.health = 100;
         this.loadSpaceship();
-        this.position = new THREE.Vector3(0, 0, 0);
+
+        this._position = this.group.position
+        this._direction = new THREE.Vector3()
+        this.group.getWorldDirection(this._direction)
+        this._velocity =0
+        this.acceleration = .1
+        
+
+        this.controller = new ControllerInput(this.group)
         scene.add(this.group);                      // loading, setting initial position of the spaceship and adding it to the scene
     }
-
 
     loadSpaceship() {
         const spaceShipLoader = new GLTFLoader();
@@ -32,6 +40,182 @@ class Spaceship {
             }
         );
     }
+
+    update()
+    {
+        var target = this.group
+
+        if (this.controller._keys.right)
+        {
+            this.group.rotation.y -=0.01
+        }
+
+        if (this.controller._keys.left)
+        {
+            this.group.rotation.y +=0.01
+        }
+        
+
+        if (this.controller._keys.forward) {
+
+            if (this._velocity < 1)
+            {
+                this._velocity+=this.acceleration
+            }
+        }
+
+        if (this.controller._keys.backward) {
+
+            if (this._velocity !=0 )
+                this._velocity-=this.acceleration
+        }
+
+        this._velocity = Math.max(0, this._velocity)
+        this.group.getWorldDirection(this._direction)
+        this._position.addScaledVector(this._direction, -this._velocity)
+
+
+    }
 }
+
+
+class ControllerInput {
+
+    constructor(target) {this.target = target,this._Init() }
+
+    _Init()
+    {
+        this._current ={
+            leftButton: false,
+            rightButton: false,
+            mouseX: 0.0,
+            mouseY: 0.0
+        }
+        this._keys ={
+            forward: false,
+            backward:false,
+            left: false,
+            right: false,
+            space:false,
+            shift:false
+        };
+
+        this._previous = null;
+
+        // event listeners for keys
+        document.addEventListener('keydown', (e)=> this._OnKeyDown(e), false);
+        document.addEventListener('keyup', (e)=> this._OnKeyUp(e), false);
+
+        //event listeners for mouse
+        document.addEventListener('mousedown', (e)=> this._OnMouseDown(e), false);
+        document.addEventListener('mouseup', (e)=> this._OnMouseUp(e), false);
+        document.addEventListener('mousemove', (e)=> this._OnMouseMove(e), false);
+    } 
+
+    _OnMouseDown(e)
+    {
+        switch(e.button)
+        {
+            case 0: {
+                this._current.leftButton =true
+                break
+            }
+            case 2: {
+                this._current.rightButton =true
+                break
+            }
+        }
+    }
+
+    _OnMouseUp(e)
+    {
+        switch(e.button)
+        {
+            case 0: {
+                this._current.leftButton =false
+                break
+            }
+            case 2: {
+                this._current.rightButton =false
+                break
+            }
+        }
+    }
+
+    _OnMouseMove(e)
+    {
+        this._current.mouseX = e.pageX - window.innerWidth/2;
+        this._current.mouseY = e.pageY - window.innerHeight/2;
+
+        if (this._previous == null)
+        {
+            this._previous ={...this._current};
+        }
+    }
+
+    _OnKeyDown(event)
+    {
+        switch(event.keyCode)
+        {
+            case 87: //w
+            this._keys.forward =true;
+            break;
+
+            case 65: //a
+            this._keys.left =true;
+            break;
+
+            case 83: //s
+            this._keys.backward =true;
+            break;
+
+            case 68: //d
+            this._keys.right =true;
+            break;
+
+            case 32: //space
+            this._keys.space =true;
+            break;
+
+            case 16: //Shift
+            this._keys.shift=true;
+            break;
+        }
+    }
+
+    _OnKeyUp(event)
+    {
+        switch(event.keyCode)
+        {
+            case 87: //w
+            this._keys.forward =false;
+            break;
+
+            case 65: //a
+            this._keys.left =false;
+            break;
+
+            case 83: //s
+            this._keys.backward =false;
+            break;
+
+            case 68: //d
+            this._keys.right =false;
+            break;
+
+            case 32: //space
+            this._keys.space =false;
+            break;
+
+            case 16: //Shift
+            this._keys.shift=false;
+            break;
+        }
+
+    }
+
+
+}
+
 
 export default Spaceship;

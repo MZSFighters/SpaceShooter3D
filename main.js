@@ -4,6 +4,60 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Spaceship from './spaceship';
 import Planet from './planet';
 import EnemySpaceship from './enemy_spaceship';
+import {GUI} from 'dat.gui';
+
+//Classes
+
+class ThirdPersonCamera //must pass through camera in params
+{
+    constructor(params)
+    {
+        this._params= params
+        this._camera = params.camera
+
+        this._currentPosition = new THREE.Vector3();
+        this._currentLookAt = new THREE.Vector3();
+    }
+
+    Update(velocity=10)
+    {
+        const idealOffSet = this._CalculateIdealOffset(velocity);
+        const idealLookAt = this._CalculateIdealLookat();
+
+        this._currentPosition.copy(idealOffSet);
+        this._currentLookAt.lerp(idealLookAt, 0.5);
+        
+        this._camera.position.copy(this._currentPosition);
+        this._camera.lookAt(this._currentLookAt);
+
+    }
+
+    _CalculateIdealOffset(offset) {
+        const idealOffset = new THREE.Vector3(0, 2, (offset)*2+5 );
+        idealOffset.applyQuaternion(this._params.target.quaternion);
+        idealOffset.add(this._params.target.position);
+        return idealOffset;
+      }
+    
+
+    _CalculateIdealLookat() {
+        const idealLookat = new THREE.Vector3(0, 0, -40);
+        idealLookat.applyQuaternion(this._params.target.quaternion);
+        idealLookat.add(this._params.target.position);
+        return idealLookat;
+      }
+
+
+}
+
+class FirstPersonCamera
+{
+    constructor(params)
+    {
+        this._params = params
+        this._camera = this._params.camera
+    }
+}
 
 
 //----------------------------------------Functions------------------------------------------------------//
@@ -52,6 +106,7 @@ function loadSpaceStation() {
 //--------------------------------------------------------------------------------------------------------//
 
 
+
 // initial setup
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -60,16 +115,6 @@ document.body.appendChild(renderer.domElement);
 
 
 const scene = new THREE.Scene();
-const thirdPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const firstPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-let isthirdPersonCamera = true;                             // Boolean flag to track the active camera
-
-
-// Just to test and to move around using the camera at (0,0)
-const orbit = new OrbitControls(thirdPersonCamera, renderer.domElement);
-orbit.update();
-
-
 
 // loading the skybox, earth, moon and the spaceship in the scene
 skybox();
@@ -82,11 +127,6 @@ const enemy_spaceship = new EnemySpaceship(scene);
 const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
 directionalLight.position.set(1000,0,0);
 scene.add( directionalLight );
-/*
-const lightTarget = new THREE.Object3D();
-scene.add( lightTarget);
-directionalLight.target = lightTarget;
-lightTarget.position.set(150,0,50);*/
 
 
 
@@ -94,29 +134,38 @@ lightTarget.position.set(150,0,50);*/
 var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.1);
 scene.add(ambientLight);
 
+//Camera
+var camera = new  THREE.PerspectiveCamera(60, 1920/1080, 1.0, 1000.0)
 
-// default camera positioning for both cameras
-thirdPersonCamera.position.z = 5;
-thirdPersonCamera.position.y = 1;
-firstPersonCamera.position.y = 0.9;
-firstPersonCamera.position.z = 1;
+var thirdPersonCamera =new ThirdPersonCamera({
+    camera: camera,
+    target: spaceship.group
+})
+
+var firstPersonCamera = new FirstPersonCamera({
+    camera: camera,
+})
+
+
+
+//enemy AI
+
+
 
 
 // Animating 
 function animate() {
     requestAnimationFrame(animate);
-   
-    // updating planet and moon position
+
+    enemy_spaceship.update(spaceship);
+    spaceship.update()
     planet.update();     
+    thirdPersonCamera.Update(spaceship._velocity)
 
-    // rendering according to the camera type
-    if (isthirdPersonCamera) {
-        renderer.render(scene, thirdPersonCamera);
-    } else {
-        renderer.render(scene, firstPersonCamera);
-    }
 
+    renderer.render(scene, camera);
 }
+
 
 animate();
 
@@ -127,11 +176,6 @@ animate();
 
 
 // takes care of resizing when we open or close the console
-window.addEventListener('resize', function () {
-    thirdPersonCamera.aspect = window.innerWidth / window.innerHeight;
-    thirdPersonCamera.updateProjectionMatrix();
-});
-
 
 //---------------------------------------------------------------------------------------------------------------------------------//
 
