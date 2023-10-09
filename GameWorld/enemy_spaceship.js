@@ -2,14 +2,15 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 
-
 class enemySpaceship {
-    constructor(scene) {
+    constructor(scene,x,y,z) {
         this.group = new THREE.Group();
-
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.health = 100;
         this.loadSpaceship();
-        this.position = this.group.position.set(-10, -20, -10);
+        this.group.position.set(this.x,this.y,this.z);
         scene.add(this.group);                      // loading, setting initial position of the spaceship and adding it to the scene
     }
 
@@ -20,7 +21,7 @@ class enemySpaceship {
             './assets/objects/enemy_spaceship/scene.gltf',
             (gltf) => {
                 this.spaceShip = gltf.scene;
-                this.spaceShip.scale.set(0.7, 0.7, 0.7);
+                this.spaceShip.scale.set(0.5, 0.5, 0.5);
                 this.group.add(this.spaceShip);
             },
             (xhr) => {
@@ -34,7 +35,7 @@ class enemySpaceship {
         );
     }
 
-
+    
     update(target) {
 
         const rotationMatrix = new THREE.Matrix4();

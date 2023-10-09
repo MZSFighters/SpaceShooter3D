@@ -2,12 +2,11 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 
-
 class Spaceship {
     constructor(scene) {
         this.group = new THREE.Group();
-
         this.health = 100;
+        this.shield = 0;
         this.loadSpaceship();
 
         this._position = this.group.position
@@ -15,7 +14,6 @@ class Spaceship {
         this.group.getWorldDirection(this._direction)
         this._velocity =0
         this.acceleration = .1
-        
 
         this.controller = new ControllerInput(this.group)
         scene.add(this.group);                      // loading, setting initial position of the spaceship and adding it to the scene
