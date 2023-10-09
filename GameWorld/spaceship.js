@@ -58,6 +58,7 @@ class Spaceship {
 
             if (this._velocity < 1)
             {
+                console.log("Forwards")
                 this._velocity+=this.acceleration
             }
         }

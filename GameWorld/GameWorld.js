@@ -18,27 +18,24 @@ class GameWorld {
     document.body.appendChild(this.renderer.domElement);
 
     this.scene = new THREE.Scene();
-    this.thirdPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.firstPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.isthirdPersonCamera = true;                             // Boolean flag to track the active camera
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
 
     this.setupCameras();
-    this.setupControls();
+    //this.setupControls();
     this.setupScene();
 
   }
 
   setupCameras() {
     // default camera positioning for both cameras
-    this.thirdPersonCamera.position.z = 5;
-    this.thirdPersonCamera.position.y = 1;
-    this.firstPersonCamera.position.y = 0.9;
-    this.firstPersonCamera.position.z = 1;
+    this.camera.position.z = 5;
+    this.camera.position.y = 1;
   }
 
   setupControls() {
     // Just to test and to move around using the camera at (0,0)
-    const orbit = new OrbitControls(this.thirdPersonCamera, this.renderer.domElement);
+    const orbit = new OrbitControls(this.camera, this.renderer.domElement);
     orbit.update();
   }
 
@@ -72,6 +69,9 @@ class GameWorld {
     const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.1);
     this.scene.add(ambientLight);
 
+
+    this.thirdPersonCamera = new ThirdPersonCamera({camera: this.camera, target: this.spaceship.group})
+
     // adding power ups (for later)
     /*
     new powerUp(scene, 'health',5,0,-5);
@@ -90,11 +90,10 @@ class GameWorld {
     this.particles.animateStars();
 
     // rendering according to the camera type
-    if (this.isthirdPersonCamera) {
-      this.renderer.render(this.scene, this.thirdPersonCamera);
-    } else {
-      this.renderer.render(this.scene, this.firstPersonCamera);
-    }
+    this.thirdPersonCamera.update()
+    this.spaceship.update()
+    this.renderer.render(this.scene, this.camera);
+
 
   }
 
