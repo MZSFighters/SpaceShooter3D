@@ -6,21 +6,21 @@ class Particles {
     this.stars;
 
     this.starMaterial = new THREE.PointsMaterial({
-      color: 0xFF0000,
+      color: 0xFFFFFF,
       size: 0.02,
     });
   }
 
   createStars() {
     const starGeometry = new THREE.BufferGeometry();
-    const starCount = 3000; // number of particles
+    const starCount = 1000; // number of particles
 
     const positions = [];
 
     for (let i = 0; i < starCount; i++) {
-      const x = (Math.random() - 0.5) * 1000; // the range and density of particles
-      const y = (Math.random() - 0.5) * 1000;
-      const z = (Math.random() - 0.5) * 1000;
+      const x = (Math.random() - 0.5) * 3000; // the range and density of particles
+      const y = (Math.random() - 0.5) * 3000;
+      const z = (Math.random() - 0.5) * 3000;
 
       positions.push(x, y, z);
     }

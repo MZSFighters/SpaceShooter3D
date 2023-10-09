@@ -19,10 +19,10 @@ class Planet {
             './assets/objects/moon/scene.gltf',
             (gltf) => {
                 this.moon = gltf.scene;
-                this.moon.scale.set(15, 15, 15);
+                this.moon.scale.set(30, 30, 30);
 
                 //the moon's position relative to the Earth
-                this.moon.position.set(300, 400, -150); // (initially z was 0)
+                this.moon.position.set(300, 350, -150); // (initially z was 0)
 
                 this.earth.add(this.moon);
             },
@@ -65,7 +65,7 @@ class Planet {
 
         if (this.moon) {
             // rotating the moon around the earth which is the parent object
-            this.moon.rotation.y += 0.01;
+            this.moon.rotation.y -= 0.01;
         }
     }
 }

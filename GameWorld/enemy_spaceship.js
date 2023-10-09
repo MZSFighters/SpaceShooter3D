@@ -21,7 +21,7 @@ class enemySpaceship {
             './assets/objects/enemy_spaceship/scene.gltf',
             (gltf) => {
                 this.spaceShip = gltf.scene;
-                this.spaceShip.scale.set(0.7, 0.7, 0.7);
+                this.spaceShip.scale.set(0.5, 0.5, 0.5);
                 this.group.add(this.spaceShip);
             },
             (xhr) => {

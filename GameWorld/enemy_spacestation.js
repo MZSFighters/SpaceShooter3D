@@ -20,9 +20,7 @@ class enemySpacestation{
           (gltf) => {
             const spaceStation = gltf.scene;
       
-            spaceStation.scale.set(2, 2, 2);
-            
-      
+            spaceStation.scale.set(2, 2, 2);  
             this.group.add(spaceStation);
           },
           (xhr) => {
