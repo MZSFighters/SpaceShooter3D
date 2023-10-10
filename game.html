@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="st.css">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			body, html{
+    		overflow: hidden;}
+		</style>
+	</head>
+	<body>
+
+		<canvas class="webgl"></canvas>
+		<div class="health">
+			<ul>
+				<li>
+					<img src="/assets/icons/heart.png" alt="Description for image" width="30" height="30">
+				</li>
+				<li>
+					<div class="heart-container">
+						<div class="health-bar" id="health-bar"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="sheld">
+			<ul>
+				<li>
+					<img src="/assets/icons/sheld.png" alt="Description for image" width="30" height="30">
+				</li>
+				<li>
+					<div class="sheld-container">
+						<div class="sheld-bar" id="sheld-bar"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<script src="script.js"></script>
+
+		<script type="module" src="/main.js"></script>
+	</body>
+</html>

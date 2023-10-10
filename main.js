@@ -53,7 +53,8 @@ function loadSpaceStation() {
 
 
 // initial setup
-const renderer = new THREE.WebGLRenderer();
+const canvas = document.querySelector('.webgl');
+const renderer = new THREE.WebGLRenderer({canvas});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 

@@ -10,4 +10,35 @@
 	<body>
 		<script type="module" src="/main.js"></script>
 	</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Space Shooter Game</title>
+
+    <script>
+        document.getElementById('closeLink').addEventListener('click', function (e) {
+            e.preventDefault();
+            window.close();
+        });
+    </script>
+</head>
+<body>
+    <nav>
+    <h1>Welcome to the Space Shooter Game</h1>
+    
+    <p>Journey through the galaxy with our action-packed space shooter game. Choose from multiple levels with increasing difficulty to challenge your skills. Are you ready to save the universe?</p>
+    
+    <ul>
+        <li><a href="game.html">Play Game</a></li>
+        <li><a href="webpages/how_to_play.html">How to Play</a></li>
+        <li><a href="webpages/options.html">Options</a></li>
+        <li><a href="webpages/leaderboard.html">Leaderboard</a></li>
+		<li><a href="webpages/credits.html">Credits</a></li>
+        <li><a href="#" id="closeLink">Exit Game</a></li>
+    </ul>
+    </nav>
+</body>
 </html>
