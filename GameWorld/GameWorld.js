@@ -71,6 +71,11 @@ class GameWorld {
     const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.1);
     this.scene.add(ambientLight);
 
+    // This hemisphere light is purely for the minimap camera.
+    // has very minimal (basically nothing) impact on rest of scene
+    const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
+
+
 
     this.thirdPersonCamera = new ThirdPersonCamera({camera: this.camera, target: this.spaceship.group})
 
@@ -80,6 +85,42 @@ class GameWorld {
     new powerUp(scene, 'shield',-5,0,-5);
     new powerUp(scene, 'speed_boost',0,0,-5);
     */
+
+    //orthographic camera (mini-map)
+    const aspect = window.innerWidth / innerHeight;
+    const viewSize = 40;
+    
+    this.miniMapCamera = new THREE.OrthographicCamera(
+        -aspect * viewSize / 2,
+        aspect * viewSize / 2,
+        viewSize / 2,
+        -viewSize / 2,
+        -1000, 1000
+    );
+    this.miniMapCamera.position.set(0, 25, 0);
+    this.miniMapCamera.lookAt(0, 0, -5);
+    // this.thirdPersonCamera.add(this.miniMapCamera);
+    this.insetWidth = window.innerHeight / 4;
+    this.insetHeight = window.innerHeight / 4;
+    this.miniMapCamera.aspect = this.insetWidth/this.insetHeight;
+    this.miniMapCamera.add(this.light);
+    this.camera.add(this.miniMapCamera);  
+
+
+  //   function resize() {
+  //     this.thirdPersonCamera.aspect = window.innerWidth / window.innerHeight;
+  //     this.thirdPersonCamera.updateProjectionMatrix();
+  
+  //     this.renderer.setSize(window.innerWidth, window.innerHeight);
+  
+  //     insetWidth = window.innerHeight / 4;
+  //     insetHeight = window.innerHeight / 4;
+  
+  //     this.miniMapCamera.aspect = insetWidth/insetHeight;
+  //     this.miniMapCamera.updateProjectionMatrix();
+  // }
+  // window.addEventListener("resize", resize);
+
   }
 
   animate() {
@@ -94,9 +135,29 @@ class GameWorld {
     // rendering according to the camera type
     this.thirdPersonCamera.update()
     this.spaceship.update()
+    // this.renderer.render(this.scene, this.camera);
+
+//updating minimpap camera
+    this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
     this.renderer.render(this.scene, this.camera);
+    this.renderer.setScissorTest(true);
 
+    this.renderer.setScissor(
+        window.innerWidth - this.insetWidth - 16,
+        window.innerHeight - this.insetHeight - 16,
+        this.insetWidth,
+        this.insetHeight
+    );
 
+    this.renderer.setViewport(
+        window.innerWidth - this.insetWidth - 16,
+        window.innerHeight - this.insetHeight - 16,
+        this.insetWidth,
+        this.insetHeight
+    );
+
+    this.renderer.render(this.scene, this.miniMapCamera);
+    this.renderer.setScissorTest(false);
   }
 
   setupSkybox() {
