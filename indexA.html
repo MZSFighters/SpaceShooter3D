@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="/st.css">
+		<title>My first three.js app</title>
+		
+	</head>
+	<body>
+		<script type="module" src="/main.js"></script>
+		
+		<div class="progress-bar-container">
+			<label for="progress-bar">Loading Game...</label>
+			<progress id="progress-bar" value="0" max="100"></progress>
+		</div>
+
+		<canvas class="webgl"></canvas>
+		<div class="health">
+			<ul>
+				<li>
+					<img src="/assets/images/health.png" alt="Description for image" width="30" height="30">
+				</li>
+				<li>
+					<div class="heart-container">
+						<div class="health-bar" id="health-bar"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="sheld">
+			<ul>
+				<li>
+					<img src="/assets/images/shield.png" alt="Description for image" width="30" height="30">
+				</li>
+				<li>
+					<div class="sheld-container">
+						<div class="sheld-bar" id="sheld-bar"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="speed">
+			<ul>
+				<li>
+					<img src="/assets/images/speed.png" alt="Description for image" width="30" height="30">
+				</li>
+				<li>
+					<div class="speed-container">
+						<div class="speed-bar" id="speed-bar"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+
+	</body>
+</html>

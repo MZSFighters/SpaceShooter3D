@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import loadingManager from './loadingManager.js';
 
 
 class Spaceship {
@@ -20,7 +21,7 @@ class Spaceship {
     }
 
     loadSpaceship() {
-        const spaceShipLoader = new GLTFLoader();
+        const spaceShipLoader = new GLTFLoader(loadingManager);
         spaceShipLoader.load(
             './assets/objects/spaceship/scene.gltf',
             (gltf) => {

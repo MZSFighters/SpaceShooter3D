@@ -8,12 +8,14 @@ import powerUp from './powerups';
 import enemySpacestation from './enemy_spacestation';
 import Particles from './particles';
 import  ThirdPersonCamera from './custom_cameras.js';
+import loadingManager from './loadingManager.js';
 
 
 class GameWorld {
   constructor() {
     // initial setup
-    this.renderer = new THREE.WebGLRenderer();
+    this.canvas = document.querySelector('.webgl'); // Fix: Use '.webgl' to select the canvas element
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
 
@@ -98,7 +100,7 @@ class GameWorld {
   }
 
   setupSkybox() {
-    const cubeTextureLoader = new THREE.CubeTextureLoader();
+    const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager);
     this.scene.background = cubeTextureLoader.setPath("./assets/images/space_skybox/").load(["right.png",
       "left.png",
       "top.png",

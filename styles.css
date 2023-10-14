@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('assets/images/space_skybox/bottom.png'); /* Replace 'background.jpg' with your image file path */
+    background-size: cover; /* Optional: Adjust how the background image is displayed */
+    background-repeat: no-repeat; /* Optional: Prevent image tiling */
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+nav {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h1 {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 72px;
+    background: linear-gradient(to right, #2486e2, #ab5ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover{
+    /*color: rgb(0, 119, 255);*/
+    background: linear-gradient(to right, #2486e2, #ab5ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+ul{
+    list-style: none;
+    font-weight: bold;
+    font-size: 34px;
+    flex: auto;
+}
+
+
