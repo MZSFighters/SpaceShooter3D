@@ -16,7 +16,15 @@ class Spaceship {
         this._velocity =0
         this.acceleration = .1
 
-        this.controller = new ControllerInput(this.group)
+                //Laser stuff
+        this.lasers = [];
+        this.lasSpeed = 300;
+        this.clock = new THREE.Clock();
+        this.delta = 0;
+        this._scene = scene;
+        // scene.add(this.laser1);
+
+        this.controller = new ControllerInput(this.group);
         scene.add(this.group);                      // loading, setting initial position of the spaceship and adding it to the scene
     }
 
@@ -70,11 +78,30 @@ class Spaceship {
                 this._velocity-=this.acceleration
         }
 
+        if (this.controller._keys.space) {
+            console.log("shooting hopefully");
+            this.shootAction();
+        }
+
         this._velocity = Math.max(0, this._velocity)
         this.group.getWorldDirection(this._direction)
         this._position.addScaledVector(this._direction, -this._velocity)
 
+        //laser updating
+        this.delta = this.clock.getDelta();
+        this.lasers.forEach(l => {
+            l.translateZ(-this.lasSpeed * this.delta);
+        });
 
+    }
+
+    shootAction(_direction) {
+        this.laser1 = new THREE.Mesh(new THREE.SphereGeometry(0.5, 8, 4), new THREE.MeshBasicMaterial({color: "red"}));
+        this.laser1.position.copy(this._position);
+        // this.laser1.quaternion.copy(this.quaternion);
+        this.laser1.rotation.copy(this.group.rotation);
+        this._scene.add(this.laser1);
+        this.lasers.push(this.laser1);
     }
 }
 
@@ -97,7 +124,8 @@ class ControllerInput {
             left: false,
             right: false,
             space:false,
-            shift:false
+            shift:false,
+            space:false,
         };
 
         this._previous = null;
@@ -180,6 +208,10 @@ class ControllerInput {
             case 16: //Shift
             this._keys.shift=true;
             break;
+
+            case 32: //Spacebar
+            this._keys.space=true;
+            break;
         }
     }
 
@@ -209,6 +241,10 @@ class ControllerInput {
 
             case 16: //Shift
             this._keys.shift=false;
+            break;
+
+            case 32: //Spacebar
+            this._keys.space=false;
             break;
         }
 
