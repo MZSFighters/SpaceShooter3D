@@ -77,11 +77,10 @@ class GameWorld {
     this.thirdPersonCamera = new ThirdPersonCamera({ camera: this.camera, target: this.spaceship.group })
 
     // adding power ups (for later)
-    /*
-    new powerUp(scene, 'health',5,0,-5);
-    new powerUp(scene, 'shield',-5,0,-5);
-    new powerUp(scene, 'speed_boost',0,0,-5);
-    */
+    
+    this.powerupOne = new powerUp(this.scene, 'health',5,0,-5);
+    this.powerupTwo = new powerUp(this.scene, 'shield',-5,0,-5);
+    this.powerupThree = new powerUp(this.scene, 'speed_boost',0,0,-5);
 
     // orthographic camera (mini-map)
     const aspect = window.innerWidth / innerHeight;
@@ -192,6 +191,17 @@ class GameWorld {
     if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationThree)) {
       console.log("Spaceship collided with the third enemy base");
       // ...
+    }
+
+    // Spaceship-Powerup Collisions
+    if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupOne)){
+      console.log("Spaceship collided with the power up one");
+    }
+    if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupTwo)){
+      console.log("Spaceship collided with the power up two");
+    }
+    if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupThree)){
+      console.log("Spaceship collided with the power up three");
     }
 
     // Spaceship-Asteroids Collision
