@@ -43,7 +43,7 @@ body {
     top: 0;
     left: 0;
     position: absolute;
-    background-color: green;
+    background-color: lime;
     transition: width 0.1s;
     border-radius: 20px;
 }

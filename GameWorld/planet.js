@@ -11,6 +11,9 @@ class Planet {
         this.loadMoon();
         this.group.position.set(150, 0, 50);
         scene.add(this.group);
+
+        // bounding sphere of the earth for collision detection
+        this.earthBoundingSphere = new THREE.Sphere(new THREE.Vector3(150,0,50),70); 
     }
 
     // loading moon in the world
@@ -24,7 +27,6 @@ class Planet {
 
                 //the moon's position relative to the Earth
                 this.moon.position.set(300, 350, -150); // (initially z was 0)
-
                 this.earth.add(this.moon);
             },
             (xhr) => {
@@ -47,6 +49,8 @@ class Planet {
                 this.earth = gltf.scene;
                 this.earth.scale.set(0.2, 0.2, 0.2);
                 this.group.add(this.earth);
+
+                
             },
             (xhr) => {
                 // Loading progress callback
@@ -65,6 +69,7 @@ class Planet {
         }
 
         if (this.moon) {
+            
             // rotating the moon around the earth which is the parent object
             this.moon.rotation.y -= 0.01;
         }

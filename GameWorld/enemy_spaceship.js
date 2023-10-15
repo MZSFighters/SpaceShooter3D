@@ -12,10 +12,16 @@ class enemySpaceship {
         this.health = 100;
         this.loadSpaceship();
         this.group.position.set(this.x,this.y,this.z);
-        scene.add(this.group);                      // loading, setting initial position of the spaceship and adding it to the scene
+        scene.add(this.group);                      
+
+        // bounding object of the enemy spaceship for collision detection
+        const boundingBoxGeometry = new THREE.BoxGeometry(0.5*5, 0.5*5, 0.5*6);
+        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false});     // change it to true to see the bounding box
+        this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
+        this.group.add(this.boundingBox);
     }
 
-
+    // loads the enemy spaceship in the world
     loadSpaceship() {
         const spaceShipLoader = new GLTFLoader(loadingManager);
         spaceShipLoader.load(
