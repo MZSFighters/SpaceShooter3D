@@ -17,7 +17,8 @@ class Spaceship {
         this.acceleration = .1
 
                 //Laser stuff
-        this.lasers = [];
+        this.lasers1 = [];
+        // this.lasers2 = [];
         this.lasSpeed = 300;
         this.clock = new THREE.Clock();
         this.delta = 0;
@@ -89,19 +90,32 @@ class Spaceship {
 
         //laser updating
         this.delta = this.clock.getDelta();
-        this.lasers.forEach(l => {
+        this.lasers1.forEach(l => {
             l.translateZ(-this.lasSpeed * this.delta);
         });
+        // this.lasers2.forEach(l => {
+        //     l.translateZ(-this.lasSpeed * this.delta);
+        // });
 
     }
 
     shootAction(_direction) {
-        this.laser1 = new THREE.Mesh(new THREE.SphereGeometry(0.5, 8, 4), new THREE.MeshBasicMaterial({color: "red"}));
+        this.laser1 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 2, 0, Math.PI*2, 0, 5.66), new THREE.MeshBasicMaterial({color: "red"}));
         this.laser1.position.copy(this._position);
-        // this.laser1.quaternion.copy(this.quaternion);
+        // this.laser1.translateX(-1.1);
         this.laser1.rotation.copy(this.group.rotation);
         this._scene.add(this.laser1);
-        this.lasers.push(this.laser1);
+        this.lasers1.push(this.laser1);
+
+        // Will try postion the lasers so they're in line with the guns
+        // at the moment is highly borked
+
+        // this.laser2 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 2, 0, Math.PI*2, 0, 5.66), new THREE.MeshBasicMaterial({color: "red"}));
+        // this.laser2.position.copy(this._position);
+        // this.laser2.translateX(1.1);
+        // this.laser2.rotation.copy(this.group.rotation);
+        // this._scene.add(this.laser2);
+        // this.lasers2.push(this.laser2);
     }
 }
 
