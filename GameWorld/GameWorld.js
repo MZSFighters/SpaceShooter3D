@@ -45,7 +45,7 @@ class GameWorld {
     // loading the skybox, earth, moon, and the spaceship in the scene
     this.setupSkybox();
     this.planet = new Planet(this.scene);
-    this.spaceship = new Spaceship(this.scene);
+    this.spaceship = new Spaceship(this.scene, this.camera);
   
     // loading the 3 enemy station bases
     this.enemyStationOne = new enemySpacestation(this.scene, -100, 50, -50);
@@ -108,7 +108,6 @@ class GameWorld {
  
      //initialize all sounds for the ship here
      this.backgroundSound = new THREE.Audio(this.listener);
-     this.shoot = new THREE.Audio(this.listener);
      this.impact = new THREE.Audio(this.listener);
      this.hype = new THREE.Audio(this.listener);
      this.fire = new THREE.Audio(this.listener);
@@ -133,13 +132,7 @@ class GameWorld {
    });
 
 
-   this.audioLoader.load(
-        './assets/sound/blaster-2-81267.mp3', 
-        (buffer) => {
-        this.shoot.setBuffer(buffer);
-        this.shoot.setLoop(false);
-        this.shoot.setVolume(1);
-    });
+   
 
     this.audioLoader.load(
         './assets/sound/big-impact-7054.mp3', 

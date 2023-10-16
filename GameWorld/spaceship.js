@@ -5,7 +5,7 @@ import ControllerInput from './controllerInput.js';
 
 
 class Spaceship {
-    constructor(scene) {
+    constructor(scene, camera) {
         this.group = new THREE.Group();
         this.health = 100;
         this.shield = 0;
@@ -40,7 +40,31 @@ class Spaceship {
         const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false });     // change it to true to see the bounding object
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
         this.group.add(this.boundingBox);
+
+        this.listener = new THREE.AudioListener();
+        camera.add(this.listener);
+    
+        //initialize all sounds for the ship here
+        this.shoot = new THREE.Audio(this.listener);
+        this.loadAudio();
     }
+
+
+
+    loadAudio(){
+        //Loader to load all audio files
+        this.audioLoader = new THREE.AudioLoader();
+
+        this.audioLoader.load(
+            './assets/sound/blaster-2-81267.mp3', 
+            (buffer) => {
+            this.shoot.setBuffer(buffer);
+            this.shoot.setLoop(false);
+            this.shoot.setVolume(1);
+        });
+    }
+
+
 
     // adding the back boost lights
     addBackLights() {
@@ -97,6 +121,7 @@ class Spaceship {
         if (keys.space) {
             console.log("shooting hopefully");
             this.shootAction();
+            this.shoot.play();
         }
 
         if (keys.forward) {
