@@ -22,6 +22,14 @@ class Spaceship {
         this.yAcceleration = 0.04;
         this.maxYVelocity = 1;
 
+        // spaceship laser constructor values
+        this.lasers1 = [];
+        // this.lasers2 = [];
+        this.lasSpeed = 300;
+        this.clock = new THREE.Clock();
+        this.delta = 0;
+        this._scene = scene;
+
         // controller input listeners
         this.controller = new ControllerInput(this.group);
         this.initMouseWheelListener();
@@ -86,6 +94,11 @@ class Spaceship {
         // spaceship's movement event listeners
         const keys = this.controller._keys;
 
+        if (keys.space) {
+            console.log("shooting hopefully");
+            this.shootAction();
+        }
+
         if (keys.forward) {
             this._velocity.add(this.group.getWorldDirection(new THREE.Vector3()).multiplyScalar(-this.acceleration));
 
@@ -106,6 +119,12 @@ class Spaceship {
         const velocityFactor = this._velocity.length() / this.maxVelocity;
         const intensity = Math.min(1, Math.max(0, velocityFactor));
 
+        //laser updating
+        this.delta = this.clock.getDelta();
+        this.lasers1.forEach(l => {
+            l.translateZ(-this.lasSpeed * this.delta);
+        });
+
         // updating the point light intensity
         this.backlight.intensity = intensity;
         this.backlight1.intensity = intensity;
@@ -117,6 +136,26 @@ class Spaceship {
         this._velocity.multiplyScalar(0.95);
         this._position.add(this._velocity);
 
+    }
+
+    
+    shootAction(_direction) {
+        this.laser1 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 2, 0, Math.PI*2, 0, 5.66), new THREE.MeshBasicMaterial({color: "red"}));
+        this.laser1.position.copy(this._position);
+        // this.laser1.translateX(-1.1);
+        this.laser1.rotation.copy(this.group.rotation);
+        this._scene.add(this.laser1);
+        this.lasers1.push(this.laser1);
+
+        // Will try postion the lasers so they're in line with the guns
+        // at the moment is highly borked
+
+        // this.laser2 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 2, 0, Math.PI*2, 0, 5.66), new THREE.MeshBasicMaterial({color: "red"}));
+        // this.laser2.position.copy(this._position);
+        // this.laser2.translateX(1.1);
+        // this.laser2.rotation.copy(this.group.rotation);
+        // this._scene.add(this.laser2);
+        // this.lasers2.push(this.laser2);
     }
 }
 

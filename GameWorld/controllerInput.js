@@ -16,7 +16,8 @@ class ControllerInput {
             left: false,
             right: false,
             up:false,
-            down:false
+            down:false,
+            space:false
         };
 
         this._previous = null;
@@ -93,7 +94,7 @@ class ControllerInput {
             break;
 
             case 32: //space
-            this._keys.down =true;
+            this._keys.space =true;
             break;
 
             case 16: //Shift
@@ -123,7 +124,7 @@ class ControllerInput {
             break;
 
             case 32: //space
-            this._keys.down =false;
+            this._keys.space =false;
             break;
 
             case 16: //Shift
