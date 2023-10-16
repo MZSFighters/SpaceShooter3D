@@ -239,46 +239,56 @@ class GameWorld {
     // Spaceship-Enemy Spaceships Collision
     if (this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipOne)) {
       console.log("Spaceship collided with the first enemy spaceship");
+      this.impact.play();
       // ...
     }
     if (this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipTwo)) {
       console.log("Spaceship collided with the second enemy spaceship");
+      this.impact.play();
       // ...
     }
     if (this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipThree)) {
       console.log("Spaceship collided with the third enemy spaceship");
+      this.impact.play();
       // ...
     }
 
     // Spaceship-Earth Collision
     if (this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.earthBoundingSphere)) {
       console.log("Spaceship collided with the earth");
+      this.impact.play();
       // ...
     }
 
     // Spaceship-Enemy Base Collisions
     if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationOne)) {
       console.log("Spaceship collided with the first enemy base");
+      this.impact.play();
       // ...
     }
     if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationTwo)) {
       console.log("Spaceship collided with the second enemy base");
+      this.impact.play();
       // ...
     }
     if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationThree)) {
       console.log("Spaceship collided with the third enemy base");
+      this.impact.play();
       // ...
     }
 
     // Spaceship-Powerup Collisions
     if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupOne)){
       console.log("Spaceship collided with the power up one");
+      this.power.play();
     }
     if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupTwo)){
       console.log("Spaceship collided with the power up two");
+      this.power.play();
     }
     if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupThree)){
       console.log("Spaceship collided with the power up three");
+      this.power.play();
     }
 
     // Spaceship-Asteroids Collision
