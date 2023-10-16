@@ -101,7 +101,84 @@ class GameWorld {
     this.miniMapCamera.add(this.light);
     this.camera.add(this.miniMapCamera);
 
+
+     //virtual listener for all audio effects in scene
+     this.listener = new THREE.AudioListener();
+     this.camera.add(this.listener);
+ 
+     //initialize all sounds for the ship here
+     this.backgroundSound = new THREE.Audio(this.listener);
+     this.shoot = new THREE.Audio(this.listener);
+     this.impact = new THREE.Audio(this.listener);
+     this.hype = new THREE.Audio(this.listener);
+     this.fire = new THREE.Audio(this.listener);
+     this.power = new THREE.Audio(this.listener);
+     this.loadAudio();
   }
+
+
+
+  loadAudio(){
+    //Loader to load all audio files
+    this.audioLoader = new THREE.AudioLoader();
+
+    //Here we can load multiple audios with the same loader
+    this.audioLoader.load(
+        './assets/sound/space_line-27593.mp3', 
+        (buffer) => {
+        this.backgroundSound.setBuffer(buffer);
+        this.backgroundSound.setLoop(true);
+        this.backgroundSound.setVolume(0.5);
+        this.backgroundSound.play();
+   });
+
+
+   this.audioLoader.load(
+        './assets/sound/blaster-2-81267.mp3', 
+        (buffer) => {
+        this.shoot.setBuffer(buffer);
+        this.shoot.setLoop(false);
+        this.shoot.setVolume(1);
+    });
+
+    this.audioLoader.load(
+        './assets/sound/big-impact-7054.mp3', 
+        (buffer) => {
+        this.impact.setBuffer(buffer);
+        this.impact.setLoop(false);
+        this.impact.setVolume(1);
+    });
+
+    this.audioLoader.load(
+        './assets/sound/scary-swoosh-142323.mp3', 
+        (buffer) => {
+        this.hype.setBuffer(buffer);
+        this.hype.setLoop(false);
+        this.hype.setVolume(1);
+        this.hype.play();
+    });
+
+
+    this.audioLoader.load(
+        './assets/sound/fire-magic-6947.mp3', 
+        (buffer) => {
+        this.fire.setBuffer(buffer);
+        this.fire.setLoop(false);
+        this.fire.setVolume(1);
+    });
+
+
+    this.audioLoader.load(
+      './assets/sound/success-1-6297.mp3', 
+      (buffer) => {
+      this.power.setBuffer(buffer);
+      this.power.setLoop(false);
+      this.power.setVolume(1);
+  });
+
+  }
+
+
 
   animate() {
     requestAnimationFrame(this.animate.bind(this));
