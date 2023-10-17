@@ -11,6 +11,7 @@ class enemySpaceship {
         this.z = z;
         this.health = 100;
         this.loadSpaceship();
+        this.collided = false;
         this.group.position.set(this.x,this.y,this.z);
         scene.add(this.group);                      
 

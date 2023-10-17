@@ -31,8 +31,9 @@ class CollisionDetection {
                 return true;
                 // ...
             }
-            return false;
+            
         }
+        return false;
     }
 
     // detects a collision between a cube and a sphere

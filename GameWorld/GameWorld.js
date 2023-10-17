@@ -34,6 +34,7 @@ class GameWorld {
       spaceshipEnemyBase1: false,
       spaceshipEnemyBase2: false,
       spaceshipEnemyBase3: false,
+      asteroid: false,
     };
     this.CollisionDetection = new CollisionDetection(this.scene);
   }
@@ -55,7 +56,7 @@ class GameWorld {
     // loading the skybox, earth, moon, and the spaceship in the scene
     this.setupSkybox();
     this.planet = new Planet(this.scene);
-    this.spaceship = new Spaceship(this.scene, this.camera);
+    
   
     // loading the 3 enemy station bases
     this.enemyStationOne = new enemySpacestation(this.scene, -100, 50, -50);
@@ -66,6 +67,18 @@ class GameWorld {
     this.enemySpaceshipOne = new EnemySpaceship(this.scene, -10, 0, -10);
     this.enemySpaceshipTwo = new EnemySpaceship(this.scene, 0, 95, 375);
     this.enemySpaceshipThree = new EnemySpaceship(this.scene, 295, -5, -140);
+
+    this.enemies = [];
+    this.enemies.push(this.enemySpaceshipOne);
+    this.enemies.push(this.enemySpaceshipTwo);
+    this.enemies.push(this.enemySpaceshipThree);
+
+    this.bases = [];
+    this.bases.push(this.enemyStationOne);
+    this.bases.push(this.enemyStationTwo);
+    this.bases.push(this.enemyStationThree);
+
+    this.spaceship = new Spaceship(this.scene, this.camera,this.enemies, this.bases);
 
     // creating the white particles in background
     this.particles = new Particles(this.scene);
@@ -88,9 +101,9 @@ class GameWorld {
 
     // adding power ups (for later)
     
-    this.powerupOne = new powerUp(this.scene, 'health',5,0,-5);
-    this.powerupTwo = new powerUp(this.scene, 'shield',-5,0,-5);
-    this.powerupThree = new powerUp(this.scene, 'speed_boost',0,0,-5);
+    // this.powerupOne = new powerUp(this.scene, 'health',5,0,-5);
+    // this.powerupTwo = new powerUp(this.scene, 'shield',-5,0,-5);
+    // this.powerupThree = new powerUp(this.scene, 'speed_boost',0,0,-5);
 
     // orthographic camera (mini-map)
     const aspect = window.innerWidth / innerHeight;
@@ -240,7 +253,7 @@ class GameWorld {
   collisionDetection() {
 
     // Spaceship-Enemy Spaceships Collision
-    if (!this.collisionDetected.spaceshipEnemy1 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipOne)) {
+    if (!this.enemySpaceshipOne.collided && !this.collisionDetected.spaceshipEnemy1 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipOne)) {
       console.log("Spaceship collided with the first enemy spaceship");
       this.impact.play();
       this.collisionDetected.spaceshipEnemy1 = true;
@@ -251,7 +264,7 @@ class GameWorld {
       this.spaceship.GameOver();
       // ...
     }
-    if (!this.collisionDetected.spaceshipEnemy2 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipTwo)) {
+    if (!this.enemySpaceshipTwo.collided && !this.collisionDetected.spaceshipEnemy2 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipTwo)) {
       console.log("Spaceship collided with the second enemy spaceship");
       this.impact.play();
       this.collisionDetected.spaceshipEnemy2 = true;
@@ -262,7 +275,7 @@ class GameWorld {
       this.spaceship.GameOver();
       // ...
     }
-    if (!this.collisionDetected.spaceshipEnemy3 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipThree)) {
+    if (!this.enemySpaceshipThree.collided && !this.collisionDetected.spaceshipEnemy3 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipThree)) {
       console.log("Spaceship collided with the third enemy spaceship");
       this.impact.play();
       this.collisionDetected.spaceshipEnemy3 = true;
@@ -285,7 +298,7 @@ class GameWorld {
     }
 
     // Spaceship-Enemy Base Collisions
-    if (!this.collisionDetected.spaceshipEnemyBase1 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationOne)) {
+    if (!this.enemyStationOne.collided &&!this.collisionDetected.spaceshipEnemyBase1 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationOne)) {
       console.log("Spaceship collided with the first enemy base");
       this.impact.play();
       this.collisionDetected.spaceshipEnemyBase1 = true;
@@ -297,7 +310,7 @@ class GameWorld {
       this.spaceship.GameOver();
       // ...
     }
-    if (!this.collisionDetected.spaceshipEnemyBase2 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationTwo)) {
+    if (!this.enemyStationTwo.collided && !this.collisionDetected.spaceshipEnemyBase2 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationTwo)) {
       console.log("Spaceship collided with the second enemy base");
       this.impact.play();
       this.collisionDetected.spaceshipEnemyBase2 = true;
@@ -309,7 +322,7 @@ class GameWorld {
       this.spaceship.GameOver();
       // ...
     }
-    if (!this.collisionDetected.spaceshipEnemyBase3 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationThree)) {
+    if (!this.enemyStationThree.collided && !this.collisionDetected.spaceshipEnemyBase3 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationThree)) {
       console.log("Spaceship collided with the third enemy base");
       this.impact.play();
       this.collisionDetected.spaceshipEnemyBase3 = true;
@@ -322,22 +335,23 @@ class GameWorld {
     }
 
     // Spaceship-Powerup Collisions
-    if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupOne)){
-      console.log("Spaceship collided with the power up one");
-      this.power.play();
-    }
-    if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupTwo)){
-      console.log("Spaceship collided with the power up two");
-      this.power.play();
-    }
-    if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupThree)){
-      console.log("Spaceship collided with the power up three");
-      this.power.play();
-    }
+    // if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupOne)){
+    //   console.log("Spaceship collided with the power up one");
+    //   this.power.play();
+    // }
+    // if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupTwo)){
+    //   console.log("Spaceship collided with the power up two");
+    //   this.power.play();
+    // }
+    // if(this.CollisionDetection.checkCollision(this.spaceship,this.powerupThree)){
+    //   console.log("Spaceship collided with the power up three");
+    //   this.power.play();
+    // }
 
     // Spaceship-Asteroids Collision
-    if(this.CollisionDetection.checkAsteroidCollision(this.spaceship)){
+    if(!this.collisionDetected.asteroid && this.CollisionDetection.checkAsteroidCollision(this.spaceship)){
       this.spaceship.health = 0;
+      this.collisionDetected.asteroid = true;
       this.spaceship.bindAttriAndUi();
       this.spaceship.GameOver();
     }

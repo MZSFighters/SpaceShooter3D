@@ -8,8 +8,9 @@ class enemySpacestation {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.health = 100;
+    this.health = 500;
     this.group = new THREE.Group();
+    this.collided = false;
     this.loadSpaceStation();
     this.group.position.set(this.x, this.y, this.z);
     scene.add(this.group);

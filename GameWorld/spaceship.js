@@ -5,7 +5,7 @@ import ControllerInput from './controllerInput.js';
 
 
 class Spaceship {
-    constructor(scene, camera) {
+    constructor(scene, camera,enemies,bases) {
         this.healthUi = document.getElementById('health-bar');
         this.shieldUi = document.getElementById('sheld-bar');
         //this.boostUi = document.getElementById('speed-bar');
@@ -15,7 +15,8 @@ class Spaceship {
         this.loadSpaceship();
         this.backlightIntensity = 0;
         this.addBackLights();
-
+        this.enemies = enemies;
+        this.bases = bases;
         this.bindAttriAndUi();
         this.GameOver();
 
@@ -153,7 +154,8 @@ class Spaceship {
         //laser updating
         this.delta = this.clock.getDelta();
         this.lasers1.forEach(l => {
-            l.translateZ(-this.lasSpeed * this.delta);
+            l.mesh.translateZ(-this.lasSpeed * this.delta);
+            l.boundingBox.setFromObject(l.mesh);
         });
 
         // updating the point light intensity
@@ -167,6 +169,8 @@ class Spaceship {
         this._velocity.multiplyScalar(0.95);
         this._position.add(this._velocity);
 
+        this.detectLaserCollisions();
+        this.detectLaserCollisions2();
     }
 
     
@@ -175,19 +179,47 @@ class Spaceship {
         this.laser1.position.copy(this._position);
         // this.laser1.translateX(-1.1);
         this.laser1.rotation.copy(this.group.rotation);
+        
+        //this.lasers1.push(this.laser1);
+        const laserBoundingBox = new THREE.Box3().setFromObject(this.laser1);
+        this.lasers1.push({ mesh: this.laser1, boundingBox: laserBoundingBox });
         this._scene.add(this.laser1);
-        this.lasers1.push(this.laser1);
 
-        // Will try postion the lasers so they're in line with the guns
-        // at the moment is highly borked
-
-        // this.laser2 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 2, 0, Math.PI*2, 0, 5.66), new THREE.MeshBasicMaterial({color: "red"}));
-        // this.laser2.position.copy(this._position);
-        // this.laser2.translateX(1.1);
-        // this.laser2.rotation.copy(this.group.rotation);
-        // this._scene.add(this.laser2);
-        // this.lasers2.push(this.laser2);
     }
+
+    detectLaserCollisions() {
+        this.lasers1.forEach(laser => {
+          this.enemies.forEach(enemySpaceship => {
+            const box = new THREE.Box3().setFromObject(enemySpaceship.boundingBox);
+            if (laser.boundingBox.intersectsBox(box)) {
+              enemySpaceship.health -= 10;
+              console.log(enemySpaceship.health);
+              if (enemySpaceship.health <= 0){
+               enemySpaceship.collided = true;
+                enemySpaceship.Remove(this._scene);
+              }
+            }
+          });
+        });
+    }
+
+    detectLaserCollisions2() {
+        this.lasers1.forEach(laser => {
+          this.bases.forEach(base => {
+            const box = new THREE.Box3().setFromObject(base.boundingBox);
+            if (laser.boundingBox.intersectsBox(box)) {
+              base.health -= 5;
+              console.log(base.health);
+              if (base.health <= 0){
+                base.collided = true;
+                base.Remove(this._scene);
+              }
+            }
+          });
+        });
+    }
+
+    
 
     bindAttriAndUi(){
         this.shieldUi.style.width = `${this.shield * 2}px`;
