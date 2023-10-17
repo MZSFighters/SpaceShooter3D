@@ -108,6 +108,10 @@ class Spaceship {
                 this.spaceShip = gltf.scene;
                 this.spaceShip.scale.set(0.7, 0.7, 0.7);
                 this.group.add(this.spaceShip);
+                this.spaceShip.traverse(
+                    function(object) {
+                      object.userData.name ="player"
+                    })
             },
             (xhr) => {
                 // Loading progress callback

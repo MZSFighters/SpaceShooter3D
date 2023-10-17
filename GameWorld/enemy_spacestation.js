@@ -1,14 +1,17 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import loadingManager from './loadingManager.js';
+import enemySpaceship from './enemy_spaceship.js';
 
 
 class enemySpacestation {
   constructor(scene, x, y, z) {
+    this.scene=scene
     this.x = x;
     this.y = y;
     this.z = z;
     this.health = 500;
+    this.ships=[]
     this.group = new THREE.Group();
     this.collided = false;
     this.loadSpaceStation();
@@ -53,9 +56,22 @@ class enemySpacestation {
       (error) => {
         // Error callback
         console.error('Error loading GLTF model', error);
+      }) 
+    }
+
+
+      update(target)
+      {
+        if (this.ships.length <1)
+        {
+          this.ships.push(new enemySpaceship(this.scene ,this.x+10+this.ships.length, this.y+5, this.z))
+        }
+
+        for (var i =0; i< this.ships.length; i++)
+        {
+          this.ships[i].update(target);
+        }
       }
-    );
-  }
 }
 
 export default enemySpacestation;
