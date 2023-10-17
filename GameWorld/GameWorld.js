@@ -25,6 +25,16 @@ class GameWorld {
 
     this.setupCameras();
     this.setupScene();
+
+    this.collisionDetected = {
+      spaceshipEnemy1: false,
+      spaceshipEnemy2: false,
+      spaceshipEnemy3: false,
+      spaceshipEarth: false,
+      spaceshipEnemyBase1: false,
+      spaceshipEnemyBase2: false,
+      spaceshipEnemyBase3: false,
+    };
     this.CollisionDetection = new CollisionDetection(this.scene);
   }
 
@@ -230,43 +240,84 @@ class GameWorld {
   collisionDetection() {
 
     // Spaceship-Enemy Spaceships Collision
-    if (this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipOne)) {
+    if (!this.collisionDetected.spaceshipEnemy1 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipOne)) {
       console.log("Spaceship collided with the first enemy spaceship");
       this.impact.play();
+      this.collisionDetected.spaceshipEnemy1 = true;
+      this.enemySpaceshipOne.Remove(this.scene);
+
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.spaceship.GameOver();
       // ...
     }
-    if (this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipTwo)) {
+    if (!this.collisionDetected.spaceshipEnemy2 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipTwo)) {
       console.log("Spaceship collided with the second enemy spaceship");
       this.impact.play();
+      this.collisionDetected.spaceshipEnemy2 = true;
+      this.enemySpaceshipTwo.Remove(this.scene);
+
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.spaceship.GameOver();
       // ...
     }
-    if (this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipThree)) {
+    if (!this.collisionDetected.spaceshipEnemy3 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipThree)) {
       console.log("Spaceship collided with the third enemy spaceship");
       this.impact.play();
+      this.collisionDetected.spaceshipEnemy3 = true;
+      this.enemySpaceshipThree.Remove(this.scene);
+
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.spaceship.GameOver();
       // ...
     }
 
     // Spaceship-Earth Collision
-    if (this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.earthBoundingSphere)) {
+    if (!this.collisionDetected.spaceshipEarth && this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.earthBoundingSphere)) {
       console.log("Spaceship collided with the earth");
       this.impact.play();
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.spaceship.GameOver();
       // ...
     }
 
     // Spaceship-Enemy Base Collisions
-    if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationOne)) {
+    if (!this.collisionDetected.spaceshipEnemyBase1 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationOne)) {
       console.log("Spaceship collided with the first enemy base");
       this.impact.play();
+      this.collisionDetected.spaceshipEnemyBase1 = true;
+      this.enemyStationOne.Remove(this.scene);
+
+
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.spaceship.GameOver();
       // ...
     }
-    if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationTwo)) {
+    if (!this.collisionDetected.spaceshipEnemyBase2 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationTwo)) {
       console.log("Spaceship collided with the second enemy base");
       this.impact.play();
+      this.collisionDetected.spaceshipEnemyBase2 = true;
+      this.enemyStationTwo.Remove(this.scene);
+
+
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.spaceship.GameOver();
       // ...
     }
-    if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationThree)) {
+    if (!this.collisionDetected.spaceshipEnemyBase3 && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationThree)) {
       console.log("Spaceship collided with the third enemy base");
       this.impact.play();
+      this.collisionDetected.spaceshipEnemyBase3 = true;
+      this.enemyStationThree.Remove(this.scene);
+
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.spaceship.GameOver();
       // ...
     }
 
@@ -285,7 +336,11 @@ class GameWorld {
     }
 
     // Spaceship-Asteroids Collision
-    this.CollisionDetection.checkAsteroidCollision(this.spaceship);
+    if(this.CollisionDetection.checkAsteroidCollision(this.spaceship)){
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.spaceship.GameOver();
+    }
   }
 }
 

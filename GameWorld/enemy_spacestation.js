@@ -8,6 +8,7 @@ class enemySpacestation {
     this.x = x;
     this.y = y;
     this.z = z;
+    this.health = 100;
     this.group = new THREE.Group();
     this.loadSpaceStation();
     this.group.position.set(this.x, this.y, this.z);
@@ -27,6 +28,11 @@ class enemySpacestation {
     this.boundingBox.add(cube2);
     this.group.add(this.boundingBox);
   }
+
+  Remove(scene){
+    scene.remove(this.group);
+    scene.remove(this.boundingBox);
+}
 
   // loads the space station in the world
   loadSpaceStation() {

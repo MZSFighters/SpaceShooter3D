@@ -21,6 +21,12 @@ class enemySpaceship {
         this.group.add(this.boundingBox);
     }
 
+    Remove(scene){
+        scene.remove(this.group);
+        scene.remove(this.boundingBox);
+    }
+
+
     // loads the enemy spaceship in the world
     loadSpaceship() {
         const spaceShipLoader = new GLTFLoader(loadingManager);

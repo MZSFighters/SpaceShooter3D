@@ -26,10 +26,12 @@ class CollisionDetection {
             const box2 = new THREE.Box3().setFromObject(asteroidBoundingBoxes[i]);
 
             if (box1.intersectsBox(box2)) {
-                console.log('Spaceship collided with an asteroid');
-                object1.health = 0;
+                //console.log('Spaceship collided with an asteroid');
+                //object1.health = 0;
+                return true;
                 // ...
             }
+            return false;
         }
     }
 

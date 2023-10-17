@@ -6,12 +6,18 @@ import ControllerInput from './controllerInput.js';
 
 class Spaceship {
     constructor(scene, camera) {
+        this.healthUi = document.getElementById('health-bar');
+        this.shieldUi = document.getElementById('sheld-bar');
+        //this.boostUi = document.getElementById('speed-bar');
         this.group = new THREE.Group();
         this.health = 100;
         this.shield = 0;
         this.loadSpaceship();
         this.backlightIntensity = 0;
         this.addBackLights();
+
+        this.bindAttriAndUi();
+        this.GameOver();
 
         // velocity-acceleration business
         this._position = this.group.position;
@@ -181,6 +187,25 @@ class Spaceship {
         // this.laser2.rotation.copy(this.group.rotation);
         // this._scene.add(this.laser2);
         // this.lasers2.push(this.laser2);
+    }
+
+    bindAttriAndUi(){
+        this.shieldUi.style.width = `${this.shield * 2}px`;
+        this.healthUi.style.width = `${this.health * 2}px`;
+    }
+
+    Remove(scene){
+        scene.remove(this.group);
+        scene.remove(this.boundingBox);
+    }
+
+    GameOver(){
+        const gameOverText = document.querySelector('.game-over');
+        if(this.health == 0){
+            console.log("Game Over");
+            gameOverText.style.display = 'block';
+        
+        }
     }
 }
 
