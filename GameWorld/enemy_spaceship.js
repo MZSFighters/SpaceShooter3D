@@ -22,7 +22,7 @@ class enemySpaceship {
 
         // bounding object of the enemy spaceship for collision detection
         const boundingBoxGeometry = new THREE.BoxGeometry(0.5*5, 0.5*2, 0.5*6);
-        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false});     // change it to true to see the bounding box
+        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: true});     // change it to true to see the bounding box
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
         this.boundingBox.position.set(0,1,0)
         this.group.add(this.boundingBox);

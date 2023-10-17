@@ -60,18 +60,13 @@ class GameWorld {
   
     // loading the 3 enemy station bases
     this.enemyStationOne = new enemySpacestation(this.scene, -100, 50, -50);
-    this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400);
-    this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150);
-
     // loading the enemy spaceship(s)
 
 
     this.bases = [];
     this.bases.push(this.enemyStationOne);
-    this.bases.push(this.enemyStationTwo);
-    this.bases.push(this.enemyStationThree);
 
-    this.spaceship = new Spaceship(this.scene, this.camera,this.enemies, this.bases);
+    this.spaceship = new Spaceship(this.scene, this.camera,this.enemyStationOne.ships, this.bases);
 
     // creating the white particles in background
     this.particles = new Particles(this.scene);
