@@ -196,7 +196,7 @@ class Spaceship {
           this.enemies.forEach(enemySpaceship => {
             const box = new THREE.Box3().setFromObject(enemySpaceship.boundingBox);
             if (laser.boundingBox.intersectsBox(box)) {
-              enemySpaceship.health -= 10;
+              enemySpaceship.health -= 40;
               console.log(enemySpaceship.health);
               if (enemySpaceship.health <= 0){
                enemySpaceship.collided = true;

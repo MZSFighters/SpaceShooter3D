@@ -65,7 +65,10 @@ class GameWorld {
 
     this.bases = [];
     this.bases.push(this.enemyStationOne);
-
+    //this.enemySpaceshipOne = this.enemyStationOne.ships[0];
+//this.enemySpaceshipTwo = this.enemyStationOne.ships[1];
+//this.enemySpaceshipThree = this.enemyStationOne.ships[2];
+//console.log(this.enemySpaceshipOne);
     this.spaceship = new Spaceship(this.scene, this.camera,this.enemyStationOne.ships, this.bases);
 
     // creating the white particles in background
@@ -224,7 +227,7 @@ class GameWorld {
     this.renderer.render(this.scene, this.miniMapCamera);
     this.renderer.setScissorTest(false);
 
-    //this.collisionDetection();
+    this.collisionDetection();
   }
 
   // adds the skybox to the scene 
@@ -241,23 +244,28 @@ class GameWorld {
 
   // detects collisions between objects 
   collisionDetection() {
-
+    //console.log(this.enemySpaceshipOne);
+    
     // Spaceship-Enemy Spaceships Collision
-    if (!this.enemySpaceshipOne.collided && !this.collisionDetected.spaceshipEnemy1 && this.CollisionDetection.checkCollision(this.spaceship, this.enemySpaceshipOne)) {
-      console.log("Spaceship collided with the first enemy spaceship");
-      this.impact.play();
-      this.collisionDetected.spaceshipEnemy1 = true;
-      this.enemySpaceshipOne.Remove(this.scene);
-
-      this.spaceship.health = 0;
-      this.spaceship.bindAttriAndUi();
-      this.spaceship.GameOver();
-      // ...
+    for (let i = 0; i < this.enemyStationOne.ships.length;i++){
+      if (!this.enemyStationOne.ships[i].collided && this.CollisionDetection.checkCollision(this.spaceship, this.enemyStationOne.ships[i])) {
+        console.log("Spaceship collided with an enemy spaceship");
+        this.impact.play();
+        // this.collisionDetected.spaceshipEnemy1 = true;
+        this.enemyStationOne.ships[i].Remove(this.scene);
+  
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.spaceship.GameOver();
+        // ...
+      }
     }
+    
 
     // Spaceship-Earth Collision
     if (!this.collisionDetected.spaceshipEarth && this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.earthBoundingSphere)) {
       console.log("Spaceship collided with the earth");
+      this.collisionDetected.spaceshipEarth= true;
       this.impact.play();
       this.spaceship.health = 0;
       this.spaceship.bindAttriAndUi();

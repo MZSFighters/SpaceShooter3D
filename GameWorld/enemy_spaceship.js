@@ -22,7 +22,7 @@ class enemySpaceship {
 
         // bounding object of the enemy spaceship for collision detection
         const boundingBoxGeometry = new THREE.BoxGeometry(0.5*5, 0.5*2, 0.5*6);
-        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: true});     // change it to true to see the bounding box
+        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false});     // change it to true to see the bounding box
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
         this.boundingBox.position.set(0,1,0)
         this.group.add(this.boundingBox);
@@ -114,7 +114,7 @@ class enemySpaceship {
         laser.position.addScaledVector(laser_direction, 2);
     }
         this.group.position.addScaledVector(direction, 0.1);
-        this.detectLaserCollisions(target)
+        //this.detectLaserCollisions(target)
     }
 
     //functions
@@ -126,12 +126,12 @@ class enemySpaceship {
         this.lasers.push(this.laser1)
     }
     
-    detectLaserCollisions(target) {
+    /*detectLaserCollisions(target) {
         for (var i =0; i< this.lasers.length; i++)
         {
             console.log(this.lasers[i].boundingBox);
         }
-    }
+    }*/
 }
 
 export default enemySpaceship;
