@@ -101,6 +101,43 @@ class GameWorld {
 
     // setting up the third person camera and its target which is the spaceship
     this.thirdPersonCamera = new ThirdPersonCamera({ camera: this.camera, target: this.spaceship.group })
+
+    // adding power ups (for later)
+    
+    // this.powerupOne = new powerUp(this.scene, 'health',5,0,-5);
+    // this.powerupTwo = new powerUp(this.scene, 'shield',-5,0,-5);
+    // this.powerupThree = new powerUp(this.scene, 'speed_boost',0,0,-5);
+
+    // rear view camera
+    const aspect = window.innerWidth / innerHeight;
+    this.rearViewCamera = new THREE.PerspectiveCamera(
+      70,
+      aspect,
+      0.01, 
+      500
+    )
+    // setting up rear view camera  
+    this.rearViewCamera.position.set(0, 0, -8);
+    this.rearViewCamera.lookAt(0, 0, 0.2);
+    this.insetWidth = window.innerWidth / 4;
+    this.insetHeight = window.innerHeight / 4;
+    this.rearViewCamera.aspect = this.insetWidth / this.insetHeight;
+    this.rearViewCamera.add(this.light);
+    // adding rear view camera as child to camera
+    this.camera.add(this.rearViewCamera);
+
+
+     //virtual listener for all audio effects in scene
+     this.listener = new THREE.AudioListener();
+     this.camera.add(this.listener);
+ 
+     //initialize all sounds for the ship here
+     this.backgroundSound = new THREE.Audio(this.listener);
+     this.impact = new THREE.Audio(this.listener);
+     this.hype = new THREE.Audio(this.listener);
+     this.fire = new THREE.Audio(this.listener);
+     this.power = new THREE.Audio(this.listener);
+     this.loadAudio();
   }
 
   animate() {
@@ -119,6 +156,33 @@ class GameWorld {
       // updating the spaceship's position
       this.spaceship.update();
 
+          //updating rearview camera, setting viewport
+    // allows main camera and rear view camera toi be viewed at same time 
+    this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+    this.renderer.render(this.scene, this.camera);
+    this.renderer.clearDepth();
+    this.renderer.setScissorTest(true);
+
+    this.renderer.setScissor(
+      window.innerWidth - this.insetWidth - 17,
+      window.innerHeight - this.insetHeight - 17,
+      this.insetWidth+2,
+      this.insetHeight+2
+    );
+
+    this.renderer.setClearColor( 0xffffff, 1 );
+    this.renderer.clearColor();
+
+    this.renderer.setViewport(
+      window.innerWidth - this.insetWidth - 16,
+      window.innerHeight - this.insetHeight - 16,
+      this.insetWidth,
+      this.insetHeight
+    );
+
+    this.renderer.render(this.scene, this.rearViewCamera);
+    this.renderer.setScissorTest(false);
+
 
       // updating enemy bases and their spaceships
       for (let i = 0; i < this.enemyBases.length; i++) {
@@ -127,7 +191,7 @@ class GameWorld {
 
       this.collisionDetection();
 
-      this.renderer.render(this.scene, this.camera);
+      // this.renderer.render(this.scene, this.camera);
     } else {
       this.spaceship.GameOver();
     }
