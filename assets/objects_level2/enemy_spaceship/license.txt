@@ -1,0 +1,11 @@
+Model Information:
+* title:	Spaceship
+* source:	https://sketchfab.com/3d-models/spaceship-f0bd3aa9c49c434f988ef8a75c225170
+* author:	Thomas Andris (https://sketchfab.com/thomas005)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Spaceship" (https://sketchfab.com/3d-models/spaceship-f0bd3aa9c49c434f988ef8a75c225170) by Thomas Andris (https://sketchfab.com/thomas005) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

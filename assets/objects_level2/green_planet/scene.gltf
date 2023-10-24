@@ -1,0 +1,685 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1023,
+      "max": [
+        200.00006103515625,
+        200.0,
+        200.0
+      ],
+      "min": [
+        -200.0001678466797,
+        -200.0001220703125,
+        -200.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 12276,
+      "componentType": 5126,
+      "count": 1023,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1023,
+      "max": [
+        1.0000001192092896,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 8184,
+      "componentType": 5126,
+      "count": 1023,
+      "max": [
+        1.0000001192092896,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 5520,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 24552,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        20.0,
+        20.0,
+        0.5049688816070557
+      ],
+      "min": [
+        -20.0,
+        -20.0,
+        0.342777818441391
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 27336,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        0.9389987587928772,
+        0.9389989376068115,
+        0.6854978799819946
+      ],
+      "min": [
+        -0.9389988780021667,
+        -0.9389989376068115,
+        -0.9522453546524048
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 16368,
+      "componentType": 5126,
+      "count": 232,
+      "max": [
+        0.5076495409011841,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 22080,
+      "componentType": 5125,
+      "count": 768,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 30120,
+      "componentType": 5126,
+      "count": 1023,
+      "max": [
+        200.00006103515625,
+        200.0,
+        200.0
+      ],
+      "min": [
+        -200.0001678466797,
+        -200.0001220703125,
+        -200.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 42396,
+      "componentType": 5126,
+      "count": 1023,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 18224,
+      "componentType": 5126,
+      "count": 1023,
+      "max": [
+        1.0000001192092896,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 26408,
+      "componentType": 5126,
+      "count": 1023,
+      "max": [
+        1.0000001192092896,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 25152,
+      "componentType": 5125,
+      "count": 5520,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 54672,
+      "componentType": 5126,
+      "count": 16224,
+      "max": [
+        198.61129760742188,
+        198.61126708984375,
+        199.82228088378906
+      ],
+      "min": [
+        -198.61141967773438,
+        -198.61134338378906,
+        -199.82228088378906
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 249360,
+      "componentType": 5126,
+      "count": 16224,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 34592,
+      "componentType": 5126,
+      "count": 16224,
+      "max": [
+        1.000000238418579,
+        1.0000001192092896
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 164384,
+      "componentType": 5126,
+      "count": 16224,
+      "max": [
+        1.000000238418579,
+        1.0000001192092896
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 47232,
+      "componentType": 5125,
+      "count": 90240,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "imperioame (https://sketchfab.com/imperioame)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/green-world-orbiting-red-planet-with-rings-f356781417404cbd8c78ba4c1e162470",
+      "title": "Green world orbiting red planet with rings"
+    },
+    "generator": "Sketchfab-13.88.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 408192,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 294176,
+      "byteOffset": 408192,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 444048,
+      "byteOffset": 702368,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 1146416,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/08.Duality_baseColor.png"
+    },
+    {
+      "uri": "textures/08.Duality_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/08.anillas_baseColor.png"
+    },
+    {
+      "uri": "textures/08.anillas_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/08.Duality.2_baseColor.png"
+    },
+    {
+      "uri": "textures/08.Duality.2_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/08.Nubes-atmosfera_-_Duality.2_baseColor.png"
+    },
+    {
+      "uri": "textures/08.Nubes-atmosfera_-_Duality.2_emissive.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "08.Duality",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    },
+    {
+      "alphaMode": "BLEND",
+      "doubleSided": true,
+      "name": "08.anillas",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 2
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 3
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "08.Duality.2",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 4
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 5
+        }
+      }
+    },
+    {
+      "alphaMode": "BLEND",
+      "doubleSided": true,
+      "emissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "emissiveTexture": {
+        "index": 7
+      },
+      "name": "08.Nubes-atmosfera_-_Duality.2",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 6
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.8211145618000169
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Planeta.011_08.Duality_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2,
+            "TEXCOORD_1": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Anillas_08.anillas_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 6,
+            "POSITION": 5,
+            "TEXCOORD_0": 7
+          },
+          "indices": 8,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Planeta.012_08.Duality.2_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 10,
+            "POSITION": 9,
+            "TEXCOORD_0": 11,
+            "TEXCOORD_1": 12
+          },
+          "indices": 13,
+          "material": 2,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Nubes.010_08.Nubes-atmosfera - Duality.2_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 15,
+            "POSITION": 14,
+            "TEXCOORD_0": 16,
+            "TEXCOORD_1": 17
+          },
+          "indices": 18,
+          "material": 3,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "8 - WorldSighting Duality.fbx"
+    },
+    {
+      "children": [
+        3,
+        5,
+        7
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        -0.09406208483598819,
+        -4.782160364671915,
+        -4.215870483560409e-07,
+        0.0,
+        -1.502967793801325,
+        0.02956283094936184,
+        -4.5407164186447755,
+        0.0,
+        4.5398383104481335,
+        -0.08929563000424856,
+        -1.503258510761733,
+        0.0,
+        -798.7433471679688,
+        1.4254661095947085e-07,
+        -2.291540915355661e-11,
+        1.0
+      ],
+      "name": "Planeta.011"
+    },
+    {
+      "mesh": 0,
+      "name": "Planeta.011_08.Duality_0"
+    },
+    {
+      "children": [
+        6
+      ],
+      "matrix": [
+        -95.67874557224285,
+        -22.090624711587694,
+        18.909837269892453,
+        0.0,
+        -20.006110358890584,
+        2.8143001490199566,
+        -97.93790755933206,
+        0.0,
+        21.10291442082286,
+        -97.48887686756083,
+        -7.112161295373737,
+        0.0,
+        -798.743408203125,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Anillas"
+    },
+    {
+      "mesh": 1,
+      "name": "Anillas_08.anillas_0"
+    },
+    {
+      "children": [
+        8,
+        9
+      ],
+      "matrix": [
+        -12.649524207350442,
+        1.915637292929152,
+        -5.658405334490737,
+        0.0,
+        5.712208506415485,
+        -1.4185004706350802e-06,
+        -12.769803191056022,
+        0.0,
+        -1.7486575268760107,
+        -13.857399328343924,
+        -0.7822107039282467,
+        0.0,
+        -311.3343200683594,
+        -4518.64990234375,
+        -1368.4456787109375,
+        1.0
+      ],
+      "name": "Planeta.012"
+    },
+    {
+      "mesh": 2,
+      "name": "Planeta.012_08.Duality.2_0"
+    },
+    {
+      "children": [
+        10
+      ],
+      "matrix": [
+        -0.8808790454932923,
+        1.4461878998533335e-08,
+        -0.4898548471514114,
+        0.0,
+        -1.9438526255836032e-08,
+        1.0079216957092263,
+        6.471188810668724e-08,
+        0.0,
+        0.4898549050877195,
+        6.600255822124827e-08,
+        -0.8808791496769688,
+        0.0,
+        -5.340576171875e-05,
+        3.814697265625e-05,
+        -3.0517578125e-05,
+        1.0
+      ],
+      "name": "Nubes.010"
+    },
+    {
+      "mesh": 3,
+      "name": "Nubes.010_08.Nubes-atmosfera - Duality.2_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    },
+    {
+      "sampler": 0,
+      "source": 3
+    },
+    {
+      "sampler": 0,
+      "source": 4
+    },
+    {
+      "sampler": 0,
+      "source": 5
+    },
+    {
+      "sampler": 0,
+      "source": 6
+    },
+    {
+      "sampler": 0,
+      "source": 7
+    }
+  ]
+}

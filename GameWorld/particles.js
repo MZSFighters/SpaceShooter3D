@@ -1,19 +1,40 @@
 import * as THREE from 'three';
 
 class Particles {
-  constructor(scene) {
+  constructor(scene, level) {
     this.scene = scene;
+    this.level = level;
     this.stars;
+    this.color;
+
+    if (this.level == 1) {
+      this.color = 0xFFFFFF;
+    }
+    else if (this.level == 2) {
+      this.color = 0xFF00FF;
+    }
+    else {
+      this.color = 0xFF0000;
+    }
 
     this.starMaterial = new THREE.PointsMaterial({
-      color: 0xFFFFFF,
+      color: this.color,
       size: 0.02,
     });
+
+    this.createStars();
   }
 
   createStars() {
     const starGeometry = new THREE.BufferGeometry();
-    const starCount = 1000; // number of particles
+    let starCount;
+
+    if (this.level == 1) {
+      starCount = 1000; // number of particles
+    }
+    else{
+      starCount = 3000;
+    }
 
     const positions = [];
 

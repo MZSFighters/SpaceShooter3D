@@ -39,7 +39,6 @@ class Spaceship {
 
         // controller input listeners
         this.controller = new ControllerInput(this.group);
-        this.initMouseWheelListener();
         scene.add(this.group);
 
         // bounding box of the spaceship for collision detection 
@@ -47,31 +46,7 @@ class Spaceship {
         const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false });     // change it to true to see the bounding object
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
         this.group.add(this.boundingBox);
-
-        this.listener = new THREE.AudioListener();
-        camera.add(this.listener);
-    
-        //initialize all sounds for the ship here
-        this.shoot = new THREE.Audio(this.listener);
-        this.loadAudio();
     }
-
-
-
-    loadAudio(){
-        //Loader to load all audio files
-        this.audioLoader = new THREE.AudioLoader();
-
-        this.audioLoader.load(
-            './assets/sound/blaster-2-81267.mp3', 
-            (buffer) => {
-            this.shoot.setBuffer(buffer);
-            this.shoot.setLoop(false);
-            this.shoot.setVolume(1);
-        });
-    }
-
-
 
     // adding the back boost lights
     addBackLights() {
@@ -84,19 +59,6 @@ class Spaceship {
         this.group.add(this.backlight);
         this.group.add(this.backlight1);
         this.group.add(this.backlight2);
-    }
-
-    // mouse event listener for the scrollbar movement
-    initMouseWheelListener() {
-        const self = this;
-        window.addEventListener('wheel', function (e) {
-            if (e.deltaY > 0) {
-                self._velocity.y -= self.yAcceleration;
-            } else {
-                self._velocity.y += self.yAcceleration;
-            }
-            self._velocity.y = THREE.MathUtils.clamp(self._velocity.y, -self.maxYVelocity, self.maxYVelocity);
-        });
     }
 
     // loading the spaceship model
@@ -130,9 +92,7 @@ class Spaceship {
         const keys = this.controller._keys;
 
         if (keys.space) {
-            console.log("shooting hopefully");
             this.shootAction();
-            this.shoot.play();
         }
 
         if (keys.forward) {
@@ -149,6 +109,13 @@ class Spaceship {
         } else if (keys.left) {
             this.group.rotation.y += this.rotationSpeed;
         }
+
+        if (keys.up){
+            this._velocity.y += this.yAcceleration;
+        } else if(keys.down){
+            this._velocity.y -= this.yAcceleration;
+        }
+        this._velocity.y = THREE.MathUtils.clamp(this._velocity.y, -this.maxYVelocity, this.maxYVelocity);
 
         // adding and controlling the velocity as well as the intensity of the back lights
         this.group.position.add(this._velocity);
@@ -173,8 +140,8 @@ class Spaceship {
         this._velocity.multiplyScalar(0.95);
         this._position.add(this._velocity);
 
-        this.detectLaserCollisions();
-        this.detectLaserCollisions2();
+        //this.detectLaserCollisions();
+        //this.detectLaserCollisions2();
     }
 
     

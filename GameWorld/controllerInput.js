@@ -15,6 +15,7 @@ class ControllerInput {
             backward:false,
             left: false,
             right: false,
+            shift:false,
             up:false,
             down:false,
             space:false
@@ -98,7 +99,15 @@ class ControllerInput {
             break;
 
             case 16: //Shift
+            this._keys.shift=true;
+            break;
+
+            case 69: // e
             this._keys.up=true;
+            break;
+
+            case 82: // r
+            this._keys.down=true;
             break;
         }
     }
@@ -128,7 +137,15 @@ class ControllerInput {
             break;
 
             case 16: //Shift
+            this._keys.shift=false;
+            break;
+
+            case 69: // e
             this._keys.up=false;
+            break;
+
+            case 82: // r
+            this._keys.down=false;
             break;
         }
     }

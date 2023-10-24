@@ -1,0 +1,11 @@
+Model Information:
+* title:	Spaceship - Evil (Gravity)
+* source:	https://sketchfab.com/3d-models/spaceship-evil-gravity-81df395b295643ea85c13b4d085a7dd7
+* author:	Sefkan Kusu (https://sketchfab.com/SKConcepts)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Spaceship - Evil (Gravity)" (https://sketchfab.com/3d-models/spaceship-evil-gravity-81df395b295643ea85c13b4d085a7dd7) by Sefkan Kusu (https://sketchfab.com/SKConcepts) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
