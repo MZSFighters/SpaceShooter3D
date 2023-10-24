@@ -96,24 +96,23 @@ class GameWorld {
     // this.powerupTwo = new powerUp(this.scene, 'shield',-5,0,-5);
     // this.powerupThree = new powerUp(this.scene, 'speed_boost',0,0,-5);
 
-    // orthographic camera (mini-map)
+    // rear view camera
     const aspect = window.innerWidth / innerHeight;
-    const viewSize = 40;
-
-    this.miniMapCamera = new THREE.OrthographicCamera(
-      -aspect * viewSize / 2,
-      aspect * viewSize / 2,
-      viewSize / 2,
-      -viewSize / 2,
-      -1000, 1000
-    );
-    this.miniMapCamera.position.set(0, 25, 0);
-    this.miniMapCamera.lookAt(0, 0, -5);
-    this.insetWidth = window.innerHeight / 4;
+    this.rearViewCamera = new THREE.PerspectiveCamera(
+      70,
+      aspect,
+      0.01, 
+      500
+    )
+    // setting up rear view camera  
+    this.rearViewCamera.position.set(0, 0, -8);
+    this.rearViewCamera.lookAt(0, 0, 0.2);
+    this.insetWidth = window.innerWidth / 4;
     this.insetHeight = window.innerHeight / 4;
-    this.miniMapCamera.aspect = this.insetWidth / this.insetHeight;
-    this.miniMapCamera.add(this.light);
-    this.camera.add(this.miniMapCamera);
+    this.rearViewCamera.aspect = this.insetWidth / this.insetHeight;
+    this.rearViewCamera.add(this.light);
+    // adding rear view camera as child to camera
+    this.camera.add(this.rearViewCamera);
 
 
      //virtual listener for all audio effects in scene
@@ -205,17 +204,22 @@ class GameWorld {
     this.enemyStationOne.update(this.spaceship);
 
 
-    //updating minimpap camera
+    //updating rearview camera, setting viewport
+    // allows main camera and rear view camera toi be viewed at same time 
     this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
     this.renderer.render(this.scene, this.camera);
+    this.renderer.clearDepth();
     this.renderer.setScissorTest(true);
 
     this.renderer.setScissor(
-      window.innerWidth - this.insetWidth - 16,
-      window.innerHeight - this.insetHeight - 16,
-      this.insetWidth,
-      this.insetHeight
+      window.innerWidth - this.insetWidth - 17,
+      window.innerHeight - this.insetHeight - 17,
+      this.insetWidth+2,
+      this.insetHeight+2
     );
+
+    this.renderer.setClearColor( 0xffffff, 1 );
+    this.renderer.clearColor();
 
     this.renderer.setViewport(
       window.innerWidth - this.insetWidth - 16,
@@ -224,7 +228,7 @@ class GameWorld {
       this.insetHeight
     );
 
-    this.renderer.render(this.scene, this.miniMapCamera);
+    this.renderer.render(this.scene, this.rearViewCamera);
     this.renderer.setScissorTest(false);
 
     this.collisionDetection();
