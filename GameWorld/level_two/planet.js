@@ -9,10 +9,10 @@ class Planet {
         this.group.position.set(-450, -20, 50);     
         
 
-        this.ball = new THREE.Mesh(new THREE.SphereGeometry(30),new THREE.MeshBasicMaterial({color:"red"}));
+        /*this.ball = new THREE.Mesh(new THREE.SphereGeometry(30),new THREE.MeshBasicMaterial({color:"red"}));
         this.ball.scale.set(5,5,5);
         this.ball.position.set(-450,-100,50);
-        scene.add(this.ball);
+        scene.add(this.ball);*/
 
 
         scene.add(this.group);
