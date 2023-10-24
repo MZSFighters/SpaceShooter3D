@@ -167,7 +167,6 @@ class GameWorld {
 
       this.collisionDetection();
 
-      this.renderer.render(this.scene, this.camera);
     } else {
       this.spaceship.GameOver();
     }
