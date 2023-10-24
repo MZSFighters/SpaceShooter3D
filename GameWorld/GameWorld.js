@@ -99,7 +99,6 @@ class GameWorld {
     this.insetWidth = window.innerWidth / 4;
     this.insetHeight = window.innerHeight / 4;
     this.rearViewCamera.aspect = this.insetWidth / this.insetHeight;
-    this.rearViewCamera.add(this.light);
     // adding rear view camera as child to camera
     this.camera.add(this.rearViewCamera);
 
