@@ -16,6 +16,17 @@ class CollisionDetection {
         return box1.intersectsBox(box2);
     }
 
+
+    // detects collision between two cube objects
+    checkPlanetCollisions(object1, object2) {
+        const boundingBox1 = object1.boundingBox;
+        
+
+        const box1 = new THREE.Box3().setFromObject(boundingBox1);
+        const box2 = new THREE.Box3().setFromObject(object2);
+        return box1.intersectsBox(box2);
+    }
+
     // detects collision specifically for a cube and asteroids
     checkAsteroidCollision(object1) {
         const boundingBox1 = object1.boundingBox;

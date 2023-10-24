@@ -7,13 +7,17 @@ class Planet {
         this.earth = new THREE.Object3D();
         this.loadEarth();
         this.group.position.set(-450, -20, 50);     
-        
 
-        /*this.ball = new THREE.Mesh(new THREE.SphereGeometry(30),new THREE.MeshBasicMaterial({color:"red"}));
-        this.ball.scale.set(5,5,5);
-        this.ball.position.set(-450,-100,50);
-        scene.add(this.ball);*/
+        this.moonBoundingSphere = new THREE.Sphere(new THREE.Vector3(-450, -20, 50), 70);
 
+        this.shield = new THREE.Mesh(new THREE.SphereGeometry(125),new THREE.MeshStandardMaterial({color:"purple", transparent: true, opacity: 0.3}));
+        this.shield.scale.set(1.45,1.45,1.45);
+        this.shield.position.set(10,-220,0);
+        this.group.add(this.shield);
+
+        this.planetBoundingSphere = new THREE.Sphere();
+        this.planetBoundingSphere.center = new THREE.Vector3(-440,-240,50); // Set the center
+        this.planetBoundingSphere.radius = 125*1.45; // Set 
 
         scene.add(this.group);
     }
@@ -44,9 +48,8 @@ class Planet {
             this.earth.rotation.y += 0.01;
         }
 
-        if(this.ball){
-            this.ball.rotation.y += 0.01;
-        }
+        
+
     }
 }
 

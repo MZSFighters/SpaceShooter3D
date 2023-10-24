@@ -69,23 +69,6 @@ class GameWorld {
       this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level);
     }
 
-    //const loader = new THREE.TextureLoader();
-
-    // Load the image texture
-    // loader.load('./assets/images/shieldy.png', (texture) => {
-    //   // Create a material with the loaded texture
-    //   const material = new THREE.MeshBasicMaterial({ map: texture });
-
-    //   // Create a sphere geometry
-    //   const geometry = new THREE.SphereGeometry(1, 40,40);
-
-    //   // Create the mesh with the material and geometry
-    //   const sphere = new THREE.Mesh(geometry, material);
-    //   sphere.position.set(0,0,-10);
-    //   // Add the sphere to your scene
-    //   this.scene.add(sphere);
-    // });
-
     // loading the 3 enemy station bases and adding them to the enemy bases list
     this.enemyBases = [];
     this.enemyBases.push(this.enemyStationOne);
@@ -102,19 +85,13 @@ class GameWorld {
     // setting up the third person camera and its target which is the spaceship
     this.thirdPersonCamera = new ThirdPersonCamera({ camera: this.camera, target: this.spaceship.group })
 
-    // adding power ups (for later)
-    
-    // this.powerupOne = new powerUp(this.scene, 'health',5,0,-5);
-    // this.powerupTwo = new powerUp(this.scene, 'shield',-5,0,-5);
-    // this.powerupThree = new powerUp(this.scene, 'speed_boost',0,0,-5);
-
     // rear view camera
     const aspect = window.innerWidth / innerHeight;
     this.rearViewCamera = new THREE.PerspectiveCamera(
       70,
       aspect,
       0.01, 
-      500
+      1000
     )
     // setting up rear view camera  
     this.rearViewCamera.position.set(0, 0, -8);
@@ -137,7 +114,6 @@ class GameWorld {
      this.hype = new THREE.Audio(this.listener);
      this.fire = new THREE.Audio(this.listener);
      this.power = new THREE.Audio(this.listener);
-     this.loadAudio();
   }
 
   animate() {
@@ -156,7 +132,7 @@ class GameWorld {
       // updating the spaceship's position
       this.spaceship.update();
 
-          //updating rearview camera, setting viewport
+      //updating rearview camera, setting viewport
     // allows main camera and rear view camera toi be viewed at same time 
     this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
     this.renderer.render(this.scene, this.camera);
@@ -184,6 +160,7 @@ class GameWorld {
     this.renderer.setScissorTest(false);
 
 
+
       // updating enemy bases and their spaceships
       for (let i = 0; i < this.enemyBases.length; i++) {
         this.enemyBases[i].update(this.spaceship);
@@ -191,7 +168,7 @@ class GameWorld {
 
       this.collisionDetection();
 
-      // this.renderer.render(this.scene, this.camera);
+      this.renderer.render(this.scene, this.camera);
     } else {
       this.spaceship.GameOver();
     }
@@ -239,47 +216,160 @@ class GameWorld {
       }
     }
 
-    // Spaceship-Earth Collision
-    // if (this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.earthBoundingSphere)) {
-    //   console.log("Spaceship collided with the earth");
-    //   this.spaceship.health = 0;
-    //   this.spaceship.bindAttriAndUi();
-    //   this.gameRunning = false;
-    // }
+    if (this.level == 1) {
+      // Spaceship-Earth Collision
+      if (this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.earthBoundingSphere)) {
+        console.log("Spaceship collided with the earth");
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+      }
 
-    // Spaceship-Asteroids Collision
-    if (this.CollisionDetection.checkAsteroidCollision(this.spaceship)) {
-      console.log("Spaceship collided with an asteroid")
-      this.spaceship.health = 0;
-      this.spaceship.bindAttriAndUi();
-      this.gameRunning = false;
-    }
-
-    // // Enemy Spaceship-Earth Collision
-    // for (let i = 0; i < this.enemyBases.length; ++i) {
-    //   for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
-    //     if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.earthBoundingSphere)) {
-    //       console.log("An enemy spaceship collided with the earth");
-    //       this.enemyBases[i].ships[j].Remove(this.scene);
-    //       const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
-    //       const x = this.enemyBases[i].ships.splice(index, 1);
-    //     }
-    //   }
-    // }
-
-    // Enemy Spaceship-Asteroid
-    for (let i = 0; i < this.enemyBases.length; ++i) {
-      for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
-        if (this.CollisionDetection.checkAsteroidCollision(this.enemyBases[i].ships[j])) {
-          console.log("An enemy spaceship collided with an asteroid");
-          this.enemyBases[i].ships[j].Remove(this.scene);
-          const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
-          const x = this.enemyBases[i].ships.splice(index, 1);
+      // Enemy Spaceship-Earth Collision
+      for (let i = 0; i < this.enemyBases.length; ++i) {
+        for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
+          if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.earthBoundingSphere)) {
+            console.log("An enemy spaceship collided with the earth");
+            this.enemyBases[i].ships[j].Remove(this.scene);
+            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
+            const x = this.enemyBases[i].ships.splice(index, 1);
+          }
         }
+      }
+
+    }
+    else if (this.level == 2) {
+
+      // Spaceship-Moon Collision
+      if (this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.moonBoundingSphere)) {
+        console.log("Spaceship collided with the moon");
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+      }
+
+      // Spaceship-Planet Collision
+      if (this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.planetBoundingSphere)) {
+        console.log("Spaceship collided with the planet");
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+      }
+
+      // Enemy Spaceship-Moon/Planet Collision
+      for (let i = 0; i < this.enemyBases.length; ++i) {
+        for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
+          if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.moonBoundingSphere)) {
+            console.log("An enemy spaceship collided with the moon");
+            this.enemyBases[i].ships[j].Remove(this.scene);
+            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
+            const x = this.enemyBases[i].ships.splice(index, 1);
+          }
+
+          if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.planetBoundingSphere)) {
+            console.log("An enemy spaceship collided with the planet");
+            this.enemyBases[i].ships[j].Remove(this.scene);
+            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
+            const x = this.enemyBases[i].ships.splice(index, 1);
+          }
+        }
+      }
+
+    }
+    else {
+      // Spaceship-Moon One Collision
+      if (this.CollisionDetection.checkPlanetCollisions(this.spaceship, this.planet.moonOneBoundingBox)) {
+        console.log("Spaceship collided with the first moon");
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+      }
+
+      // Spaceship-Moon Two Collision
+      if (this.CollisionDetection.checkPlanetCollisions(this.spaceship, this.planet.moonTwoBoundingBox)) {
+        console.log("Spaceship collided with the second moon");
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+      }
+
+      // Spaceship-Moon Three Collision
+      if (this.CollisionDetection.checkPlanetCollisions(this.spaceship, this.planet.moonThreeBoundingBox)) {
+        console.log("Spaceship collided with the third moon");
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+      }
+
+      // Spaceship-Planet Collision
+      if (this.CollisionDetection.checkSphereCollision(this.spaceship, this.planet.planetBoundingSphere)) {
+        console.log("Spaceship collided with the planet");
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+      }
+
+      for (let i = 0; i < this.enemyBases.length; ++i) {
+        for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
+          // Enemy Spaceship-Moon One Collision
+          if (this.CollisionDetection.checkPlanetCollisions(this.enemyBases[i].ships[j], this.planet.moonOneBoundingBox)) {
+            console.log("Spaceship collided with the first moon");
+            this.spaceship.health = 0;
+            this.spaceship.bindAttriAndUi();
+            this.gameRunning = false;
+          }
+
+          // Enemy Spaceship-Moon Two Collision
+          if (this.CollisionDetection.checkPlanetCollisions(this.enemyBases[i].ships[j], this.planet.moonTwoBoundingBox)) {
+            console.log("Spaceship collided with the second moon");
+            this.spaceship.health = 0;
+            this.spaceship.bindAttriAndUi();
+            this.gameRunning = false;
+          }
+
+          // Enemy Spaceship-Moon Three Collision
+          if (this.CollisionDetection.checkPlanetCollisions(this.enemyBases[i].ships[j], this.planet.moonThreeBoundingBox)) {
+            console.log("Spaceship collided with the third moon");
+            this.spaceship.health = 0;
+            this.spaceship.bindAttriAndUi();
+            this.gameRunning = false;
+          }
+
+          // Enemy Spaceship-Planet Collision
+          if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.planetBoundingSphere)) {
+            console.log("Spaceship collided with the planet");
+            this.spaceship.health = 0;
+            this.spaceship.bindAttriAndUi();
+            this.gameRunning = false;
+          }
+        }
+
       }
     }
 
+
+      // Spaceship-Asteroids Collision
+      if (this.CollisionDetection.checkAsteroidCollision(this.spaceship)) {
+        console.log("Spaceship collided with an asteroid")
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+      }
+
+
+      // Enemy Spaceship-Asteroids Collision
+      for (let i = 0; i < this.enemyBases.length; ++i) {
+        for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
+          if (this.CollisionDetection.checkAsteroidCollision(this.enemyBases[i].ships[j])) {
+            console.log("An enemy spaceship collided with an asteroid");
+            this.enemyBases[i].ships[j].Remove(this.scene);
+            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
+            const x = this.enemyBases[i].ships.splice(index, 1);
+          }
+        }
+      }
+
+    }
   }
-}
 
 export default GameWorld;

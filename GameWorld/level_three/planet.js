@@ -3,14 +3,58 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 class Planet {
     constructor(scene) {
+        this.scene = scene;
         this.group = new THREE.Group();
         this.moon = new THREE.Object3D();
         this.moon2 = new THREE.Object3D();
         this.earth = new THREE.Object3D();
         this.loadEarth();
         this.loadMoon();
-        this.group.position.set(150, 0, 50);
+        this.group.position.set(10, 5, -300);
+        this.createMoon(scene, -250, 100, 100);
+        this.createMoon(scene, 350, 20, 150);
+
+        // Brethen Moon bounding box business
+        const boundingBoxGeometry = new THREE.BoxGeometry(170, 160, 110);
+        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false });     // change it to true to see the bounding box
+        const cube = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
+        this.moonOneBoundingBox = new THREE.Group();
+        this.moonTwoBoundingBox = new THREE.Group();
+        this.moonTwoBoundingBox.add(cube);
+        this.moonTwoBoundingBox.position.set(-280, 90, 100);
+        scene.add(this.moonTwoBoundingBox);
+        const cube2 = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
+        this.moonThreeBoundingBox = new THREE.Group();
+        this.moonThreeBoundingBox.add(cube2);
+        this.moonThreeBoundingBox.position.set(320, 10, 130);
+        scene.add(this.moonThreeBoundingBox);
+
+
+
+        // bounding sphere of the red planet for collision detection
+        this.planetBoundingSphere = new THREE.Sphere(new THREE.Vector3(10, 5, -300), 40);
         scene.add(this.group);
+    }
+
+    createMoon(scene, x, y, z) {
+        const moonLoader = new GLTFLoader();
+        moonLoader.load(
+            './assets/objects_level3/brethren_moons/scene.gltf',
+            (gltf) => {
+                this.moon2 = gltf.scene;
+                this.moon2.scale.set(100, 100, 100);
+                this.moon2.position.set(x, y, z);
+                scene.add(this.moon2);
+            },
+            (xhr) => {
+                // Loading progress callback
+                console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+            },
+            (error) => {
+                // Error callback
+                console.error('Error loading GLTF model', error);
+            }
+        );
     }
 
     // loading moon in the world
@@ -20,28 +64,18 @@ class Planet {
             './assets/objects_level3/brethren_moons/scene.gltf',
             (gltf) => {
                 this.moon = gltf.scene;
-
-
-                /*const axesHelper = new THREE.AxesHelper(10);
-                this.moon.add(axesHelper);
-
-                // Add bounding box helper to the model
-                const bbox = new THREE.Box3().setFromObject(this.moon);
-                const bboxHelper = new THREE.Box3Helper(bbox, 0xffff00);
-                this.moon.add(bboxHelper);*/
-
-                this.moon.scale.set(30, 30, 30);
-                this.moon2 = gltf.scene;
-                this.moon2.position.set(-10,0,0);
-                //the moon's position relative to the Earth
-                this.moon.position.set(30, 50, -50); // (initially z was 0)
-                this.moon2.position.set(30, 50, 50);
-                // Apply inverse transformations of the parent to the child (moon).
-                this.moon.position.applyMatrix4(this.earth.matrixWorld.clone().invert());
-                this.moon.scale.applyMatrix4(this.earth.matrixWorld.clone().invert());
-                //this.earth.add(this.moon2)
+                this.moon.scale.set(70, 70, 70);
+                this.moon.position.set(30, 100, 50);
                 this.group.add(this.moon);
-                this.group.add(this.moon2);
+
+                const boundingBoxGeometry = new THREE.BoxGeometry(110, 80, 70);
+                const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false});     // change it to true to see the bounding box
+                const cube = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
+                
+                this.moonOneBoundingBox.add(cube);
+                this.moonOneBoundingBox.position.set(40, 105, -250);
+                this.scene.add(this.moonOneBoundingBox);
+                
             },
             (xhr) => {
                 // Loading progress callback
@@ -62,15 +96,7 @@ class Planet {
             (gltf) => {
 
                 this.earth = gltf.scene;
-
-                /*const axesHelper = new THREE.AxesHelper(10);
-                this.earth.add(axesHelper);
-
-                // Add bounding box helper to the model
-                const bbox = new THREE.Box3().setFromObject(this.earth);
-                const bboxHelper = new THREE.Box3Helper(bbox, 0xffff00);
-                this.earth.add(bboxHelper);*/
-                this.earth.scale.set(5, 5, 5);
+                this.earth.scale.set(15, 15, 15);
                 this.group.add(this.earth);
             },
             (xhr) => {
@@ -90,8 +116,12 @@ class Planet {
         }
 
         if (this.moon) {
-            // rotating the moon around the earth which is the parent object
+
             this.moon.rotation.y -= 0.01;
+        }
+
+        if (this.moonOneBoundingBox) {
+            this.moonOneBoundingBox.rotation.y -= 0.01;
         }
     }
 }
