@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import loadingManager from './loadingManager.js';
 import ControllerInput from './controllerInput.js';
+import Sound from './sound.js';
+import Shield from './shield.js';
 
 
 class Spaceship {
@@ -45,6 +47,12 @@ class Spaceship {
         const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false });     // change it to true to see the bounding object
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
         this.group.add(this.boundingBox);
+
+        //initialize sound
+        this.sound = new Sound(camera);
+
+        //initialize shield
+        this.shieldReal = new Shield(scene);
     }
 
     // speed boost effects
@@ -112,6 +120,7 @@ class Spaceship {
 
         if (keys.space) {
             this.shootAction();
+            this.sound.shoot.play();
         }
 
         if (keys.forward) {
@@ -158,6 +167,19 @@ class Spaceship {
         this._velocity.y = THREE.MathUtils.clamp(this._velocity.y, -this.maxYVelocity, this.maxYVelocity);
         this._velocity.multiplyScalar(0.95);
         this._position.add(this._velocity);
+
+         //update shield position
+         this.shieldReal.sphere.position.copy(this._position);
+         this.shieldReal.frame.position.copy(this._position);
+ 
+         //run shield when shield health is greater than zero
+         if(this.shield > 0){
+             this.shieldReal.shieldOn = true;
+         }
+         if(this.shield == 0){
+             this.shieldReal.shieldOn = false;
+         }
+         this.shieldReal.runShield();
 
         //this.detectLaserCollisions();
         //this.detectLaserCollisions2();
