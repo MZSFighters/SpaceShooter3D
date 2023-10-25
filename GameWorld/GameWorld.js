@@ -6,7 +6,7 @@ import PlanetLevelOne from './level_one/planet';
 import PlanetLevelTwo from './level_two/planet';
 import PlanetLevelThree from './level_three/planet';
 import EnemySpaceship from './enemy_spaceship';
-import powerUp from './powerups';
+import PowerUp from './powerups';
 import enemySpacestation from './enemy_spacestation';
 import Particles from './particles';
 import ThirdPersonCamera from './custom_cameras.js';
@@ -33,6 +33,7 @@ class GameWorld {
     this.setupCameras();
     this.setupScene();
     this.CollisionDetection = new CollisionDetection(this.scene);
+    this.boostTime = 0
     this.timer = new Timer();
   }
 
@@ -79,6 +80,11 @@ class GameWorld {
     // loading player spaceship
     this.spaceship = new Spaceship(this.scene, this.camera, this.enemyStationOne.ships, this.enemyBases);
 
+    this.powerups = [];
+    this.powerups.push(new PowerUp(this.scene, 'shield', 0, 0, -10));
+    this.powerups.push(new PowerUp(this.scene, 'health', -5, 0, -10));
+    this.powerups.push(new PowerUp(this.scene, 'speed_boost', 5, 0, -10));
+
     // creating the particles in background and adding lighting depending on the background
     this.particles = new Particles(this.scene, this.level);
     this.light = new Lights(this.scene, this.level);
@@ -91,7 +97,7 @@ class GameWorld {
     this.rearViewCamera = new THREE.PerspectiveCamera(
       70,
       aspect,
-      0.01, 
+      0.01,
       1000
     )
     // setting up rear view camera  
@@ -104,16 +110,16 @@ class GameWorld {
     this.camera.add(this.rearViewCamera);
 
 
-     //virtual listener for all audio effects in scene
-     this.listener = new THREE.AudioListener();
-     this.camera.add(this.listener);
- 
-     //initialize all sounds for the ship here
-     this.backgroundSound = new THREE.Audio(this.listener);
-     this.impact = new THREE.Audio(this.listener);
-     this.hype = new THREE.Audio(this.listener);
-     this.fire = new THREE.Audio(this.listener);
-     this.power = new THREE.Audio(this.listener);
+    //virtual listener for all audio effects in scene
+    this.listener = new THREE.AudioListener();
+    this.camera.add(this.listener);
+
+    //initialize all sounds for the ship here
+    this.backgroundSound = new THREE.Audio(this.listener);
+    this.impact = new THREE.Audio(this.listener);
+    this.hype = new THREE.Audio(this.listener);
+    this.fire = new THREE.Audio(this.listener);
+    this.power = new THREE.Audio(this.listener);
   }
 
   animate() {
@@ -135,32 +141,40 @@ class GameWorld {
       // updating the spaceship's position
       this.spaceship.update();
 
+      if (this.spaceship.boosting && this.boostTime < 300){
+        this.boostTime += 1;
+      }
+      else{
+        this.spaceship.removeBoost();
+        this.boostTime = 0;
+      }
+
       //updating rearview camera, setting viewport
-    // allows main camera and rear view camera toi be viewed at same time 
-    this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
-    this.renderer.render(this.scene, this.camera);
-    this.renderer.clearDepth();
-    this.renderer.setScissorTest(true);
+      // allows main camera and rear view camera toi be viewed at same time 
+      this.renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+      this.renderer.render(this.scene, this.camera);
+      this.renderer.clearDepth();
+      this.renderer.setScissorTest(true);
 
-    this.renderer.setScissor(
-      window.innerWidth - this.insetWidth - 17,
-      window.innerHeight - this.insetHeight - 17,
-      this.insetWidth+2,
-      this.insetHeight+2
-    );
+      this.renderer.setScissor(
+        window.innerWidth - this.insetWidth - 17,
+        window.innerHeight - this.insetHeight - 17,
+        this.insetWidth + 2,
+        this.insetHeight + 2
+      );
 
-    this.renderer.setClearColor( 0xffffff, 1 );
-    this.renderer.clearColor();
+      this.renderer.setClearColor(0xffffff, 1);
+      this.renderer.clearColor();
 
-    this.renderer.setViewport(
-      window.innerWidth - this.insetWidth - 16,
-      window.innerHeight - this.insetHeight - 16,
-      this.insetWidth,
-      this.insetHeight
-    );
+      this.renderer.setViewport(
+        window.innerWidth - this.insetWidth - 16,
+        window.innerHeight - this.insetHeight - 16,
+        this.insetWidth,
+        this.insetHeight
+      );
 
-    this.renderer.render(this.scene, this.rearViewCamera);
-    this.renderer.setScissorTest(false);
+      this.renderer.render(this.scene, this.rearViewCamera);
+      this.renderer.setScissorTest(false);
 
 
 
@@ -217,6 +231,19 @@ class GameWorld {
         this.spaceship.health = 0;
         this.spaceship.bindAttriAndUi();
         this.gameRunning = false;
+      }
+    }
+
+    // Spaceship-Power Up Collision
+    for (let i = 0; i < this.powerups.length; i++) {
+      if (this.CollisionDetection.checkCollision(this.spaceship, this.powerups[i])) {
+        //console.log("Spaceship collided with shield powerup");
+        //this.spaceship.shield = 100;
+        //this.spaceship.bindAttriAndUi();
+        this.powerups[i].update(this.spaceship,this.scene);
+        //this.powerups[i].Remove(this.scene);
+        const index = this.powerups.indexOf(this.powerups[i]);
+        const x = this.powerups.splice(index, 1);
       }
     }
 
@@ -352,28 +379,28 @@ class GameWorld {
     }
 
 
-      // Spaceship-Asteroids Collision
-      if (this.CollisionDetection.checkAsteroidCollision(this.spaceship)) {
-        console.log("Spaceship collided with an asteroid")
-        this.spaceship.health = 0;
-        this.spaceship.bindAttriAndUi();
-        this.gameRunning = false;
-      }
+    // Spaceship-Asteroids Collision
+    if (this.CollisionDetection.checkAsteroidCollision(this.spaceship)) {
+      console.log("Spaceship collided with an asteroid")
+      this.spaceship.health = 0;
+      this.spaceship.bindAttriAndUi();
+      this.gameRunning = false;
+    }
 
 
-      // Enemy Spaceship-Asteroids Collision
-      for (let i = 0; i < this.enemyBases.length; ++i) {
-        for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
-          if (this.CollisionDetection.checkAsteroidCollision(this.enemyBases[i].ships[j])) {
-            console.log("An enemy spaceship collided with an asteroid");
-            this.enemyBases[i].ships[j].Remove(this.scene);
-            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
-            const x = this.enemyBases[i].ships.splice(index, 1);
-          }
+    // Enemy Spaceship-Asteroids Collision
+    for (let i = 0; i < this.enemyBases.length; ++i) {
+      for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
+        if (this.CollisionDetection.checkAsteroidCollision(this.enemyBases[i].ships[j])) {
+          console.log("An enemy spaceship collided with an asteroid");
+          this.enemyBases[i].ships[j].Remove(this.scene);
+          const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
+          const x = this.enemyBases[i].ships.splice(index, 1);
         }
       }
-
     }
+
   }
+}
 
 export default GameWorld;
