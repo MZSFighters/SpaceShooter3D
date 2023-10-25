@@ -7,6 +7,7 @@ import PlanetLevelTwo from './level_two/planet';
 import PlanetLevelThree from './level_three/planet';
 import EnemySpaceship from './enemy_spaceship';
 import PowerUp from './powerups';
+import SpawningPowerups from './spawning_powerups';
 import enemySpacestation from './enemy_spacestation';
 import Particles from './particles';
 import ThirdPersonCamera from './custom_cameras.js';
@@ -81,9 +82,10 @@ class GameWorld {
     this.spaceship = new Spaceship(this.scene, this.camera, this.enemyStationOne.ships, this.enemyBases);
 
     this.powerups = [];
-    this.powerups.push(new PowerUp(this.scene, 'shield', 0, 0, -10));
-    this.powerups.push(new PowerUp(this.scene, 'health', -5, 0, -10));
-    this.powerups.push(new PowerUp(this.scene, 'speed_boost', 5, 0, -10));
+    // this.powerups.push(new PowerUp(this.scene, 'shield', 0, 0, -10));
+    // this.powerups.push(new PowerUp(this.scene, 'health', -5, 0, -10));
+    // this.powerups.push(new PowerUp(this.scene, 'speed_boost', 5, 0, -10));
+    this.spawningpowerups = new SpawningPowerups(this.scene, this.powerups);
 
     // creating the particles in background and adding lighting depending on the background
     this.particles = new Particles(this.scene, this.level);
@@ -140,6 +142,8 @@ class GameWorld {
 
       // updating the spaceship's position
       this.spaceship.update();
+
+      this.spawningpowerups.update();
 
       if (this.spaceship.boosting && this.boostTime < 300){
         this.boostTime += 1;
