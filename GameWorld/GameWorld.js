@@ -15,7 +15,7 @@ import Asteroids from './asteroids';
 import CollisionDetection from './collisions';
 import Lights from './lighting';
 import SkySphere from './skysphere';
-
+import Timer from './timer';
 
 
 class GameWorld {
@@ -33,6 +33,7 @@ class GameWorld {
     this.setupCameras();
     this.setupScene();
     this.CollisionDetection = new CollisionDetection(this.scene);
+    this.timer = new Timer();
   }
 
   setupCameras() {
@@ -119,6 +120,9 @@ class GameWorld {
     if (this.gameRunning) {
       requestAnimationFrame(this.animate.bind(this));
 
+      //start timer
+      this.timer.startTime();
+
       // updating planet and moon position
       this.planet.update();
 
@@ -168,6 +172,8 @@ class GameWorld {
       this.collisionDetection();
 
     } else {
+      //stop timer
+      this.timer.stopTime();
       this.spaceship.GameOver();
     }
   }

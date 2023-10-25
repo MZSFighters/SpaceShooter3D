@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="/st.css">
+		<title>Level Three</title>
+		
+	</head>
+	<body>
+		<script type="module" src="/mainThree.js"></script>
+		
+		<div class="progress-bar-container">
+			<label for="progress-bar">Loading Game...</label>
+			<progress id="progress-bar" value="0" max="100"></progress>
+		</div>
+
+		<div class="game-over">
+			<nav>
+
+			<h1>Game Over</h1>
+
+			<p id="fulltimetwo" class="fulltimetwo"> </p>
+
+			<ul>
+				<li><a href="/levelThree.html">Restart</a></li>
+				<li><a href="/index.html">Exit to Main Menu</a></li>
+			</ul>
+			</nav>
+
+		</div>
+
+		<div class="winner">
+			<nav>
+
+			<h1>Winner</h1>
+
+			<p id="fulltime" class="fulltime"> Time Recorded is</p>
+
+			<ul>
+				<li><a href="levelOne.html">Next Level</a></li>
+				<li><a href="/levelThree.html">Restart</a></li>
+				<li><a href="/index.html">Exit to Main Menu</a></li>
+			</ul>
+			</nav>
+
+		</div>
+
+		<canvas class="webgl"></canvas>
+		<div class="health">
+			<ul>
+				<li>
+					<img src="/assets/images/health.png" alt="Description for image" width="30" height="30">
+				</li>
+				<li>
+					<div class="heart-container">
+						<div class="health-bar" id="health-bar"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="sheld">
+			<ul>
+				<li>
+					<img src="/assets/images/shield.png" alt="Description for image" width="30" height="30">
+				</li>
+				<li>
+					<div class="sheld-container">
+						<div class="sheld-bar" id="sheld-bar"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="speed">
+			<ul>
+				<li>
+					<img src="/assets/images/speed.png" alt="Description for image" width="30" height="30">
+				</li>
+				<li>
+					<div class="speed-container">
+						<div class="speed-bar" id="speed-bar"></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="stopWatch">
+			<ul>
+				<li>
+					<p id="timer"> 00:00:00 </p>
+				</li>
+			</ul>
+		</div>
+		
+
+	</body>
+</html>

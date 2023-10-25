@@ -18,7 +18,6 @@ class Spaceship {
         this.enemies = enemies;
         this.bases = bases;
         this.bindAttriAndUi();
-        this.GameOver();
 
         // velocity-acceleration business
         this._position = this.group.position;
@@ -202,6 +201,7 @@ class Spaceship {
         scene.remove(this.boundingBox);
     }
 
+    // Game Over screen
     GameOver(){
         const gameOverText = document.querySelector('.game-over');
         if(this.health == 0){
@@ -210,6 +210,13 @@ class Spaceship {
         
         }
     }
+
+    // Winner screen
+    Winner(){
+        const winnerText = document.querySelector('.winner');
+        winnerText.style.display = 'block';
+    }
+
 }
 
 export default Spaceship;
