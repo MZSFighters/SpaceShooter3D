@@ -152,7 +152,7 @@ class enemySpacestation {
 
     if (this.ships.length <1 && this.health > 0)
     {
-      this.ships.push(new enemySpaceship(this.scene ,this.x+10+this.ships.length, this.y+5, this.z, this.ships ))
+      this.ships.push(new enemySpaceship(this.scene ,this.x+10+this.ships.length, this.y+5, this.z, this.level ))
     }
 
     for (var i = this.ships.length -1; i>=0; i--)

@@ -15,7 +15,7 @@ export class Laser
         const boundingBox = new THREE.Box3().setFromObject(this.mesh);
 
         const boundingBoxGeometry = new THREE.BoxGeometry();
-        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: true});     // change it to true to see the bounding box
+        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false});     // change it to true to see the bounding box
         
         //set scale of hitbox
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);

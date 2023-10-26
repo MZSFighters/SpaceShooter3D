@@ -152,6 +152,8 @@ class GameWorld {
 
       if (this.spaceship.boosting && this.boostTime < 300){
         this.boostTime += 1;
+        this.spaceship.boost -= (100/300);
+        this.spaceship.bindAttriAndUi();
       }
       else{
         this.spaceship.removeBoost();

@@ -165,7 +165,16 @@ class enemySpaceship {
 
             else if (intersections.some(e => e.object.userData.name == "player")) {
                 if (this.shooting == 0) {
-                    this.lasers.shoot("green", this.group.position, this.group.rotation)
+                    if(this.level == 1){
+                        this.lasers.shoot("lime", this.group.position, this.group.rotation);
+                    }
+                    else if (this.level == 2){
+                        this.lasers.shoot("yellow", this.group.position, this.group.rotation);
+                    }
+                    else{
+                        this.lasers.shoot("orange", this.group.position, this.group.rotation);
+                    }
+                    
                     this.shooting = 0;
                 }
                 else {
