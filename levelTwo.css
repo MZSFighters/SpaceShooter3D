@@ -135,7 +135,7 @@ label {
 
 
 .game-over{
-    background-image: url('assets/images/space_skybox/bottom.png');
+    background-image: url('assets/images/GameOver_WinningScreen_Images/Level2.png');
     background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
@@ -189,7 +189,7 @@ label {
 }
 
 .winner{
-    background-image: url('assets/images/space_skybox/bottom.png');
+    background-image: url('assets/images/GameOver_WinningScreen_Images/Level2.png');
     background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
