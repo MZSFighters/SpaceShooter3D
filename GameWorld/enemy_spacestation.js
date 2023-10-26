@@ -63,8 +63,17 @@ class enemySpacestation {
     }
 
   }
-
   Remove(scene) {
+    scene.remove(this.group);
+    this.group.traverse((object) => {
+      if (object.isMesh) {
+        object.geometry.dispose();
+        object.material.dispose();
+      }
+    });
+  }
+
+  delete(scene) {
     scene.remove(this.group);
     this.group.traverse((object) => {
       if (object.isMesh) {
@@ -136,12 +145,27 @@ class enemySpacestation {
 
 
   update(target) {
-    if (this.ships.length < 2) {
-      this.ships.push(new enemySpaceship(this.scene, this.x + 10 + this.ships.length * 10, this.y + 5, this.z, this.level))
+    if (this.health <= 0)
+    {
+      this.delete(this.scene) //remove from scene but not from update loop since we control its space ships through it
     }
 
-    for (var i = 0; i < this.ships.length; i++) {
-      this.ships[i].update(target);
+    if (this.ships.length <1 && this.health > 0)
+    {
+      this.ships.push(new enemySpaceship(this.scene ,this.x+10+this.ships.length, this.y+5, this.z, this.ships ))
+    }
+
+    for (var i = this.ships.length -1; i>=0; i--)
+    {
+      if (this.ships[i].health <=0)
+      {
+        this.ships[i].delete();
+        this.ships.splice(i, 1);
+      }
+      else
+      {
+        this.ships[i].update(target);
+      }
     }
   }
 }

@@ -4,10 +4,12 @@ import loadingManager from './loadingManager.js';
 import ControllerInput from './controllerInput.js';
 import Sound from './sound.js';
 import Shield from './shield.js';
+import Lasers from './lasers.js'
 
 
 class Spaceship {
     constructor(scene, camera, enemies, bases) {
+        this.scene = scene;
         this.healthUi = document.getElementById('health-bar');
         this.shieldUi = document.getElementById('sheld-bar');
         //this.boostUi = document.getElementById('speed-bar');
@@ -21,6 +23,9 @@ class Spaceship {
         this.bases = bases;
         this.bindAttriAndUi();
 
+        //shooting
+        this.lasers = new Lasers(this.scene);
+
         // velocity-acceleration business
         this._position = this.group.position;
         this._velocity = new THREE.Vector3();
@@ -31,12 +36,9 @@ class Spaceship {
         this.maxYVelocity = 1;
         this.boosting = false;
         // spaceship laser constructor values
-        this.lasers1 = [];
-        // this.lasers2 = [];
-        this.lasSpeed = 300;
         this.clock = new THREE.Clock();
         this.delta = 0;
-        this._scene = scene;
+
 
         // controller input listeners
         this.controller = new ControllerInput(this.group);
@@ -115,11 +117,13 @@ class Spaceship {
 
     update() {
 
+        this.lasers.update(this.bases);
+
         // spaceship's movement event listeners
         const keys = this.controller._keys;
 
         if (keys.space) {
-            this.shootAction();
+            this.lasers.shoot("red", this.group.position, this.group.rotation);
             this.sound.shoot.play();
         }
 
@@ -150,13 +154,6 @@ class Spaceship {
         const velocityFactor = this._velocity.length() / this.maxVelocity;
         const intensity = Math.min(1, Math.max(0, velocityFactor));
 
-        //laser updating
-        this.delta = this.clock.getDelta();
-        this.lasers1.forEach(l => {
-            l.mesh.translateZ(-this.lasSpeed * this.delta);
-            l.boundingBox.setFromObject(l.mesh);
-        });
-
         // updating the point light intensity
         this.backlight.intensity = intensity;
         this.backlight1.intensity = intensity;
@@ -183,52 +180,6 @@ class Spaceship {
 
         //this.detectLaserCollisions();
         //this.detectLaserCollisions2();
-    }
-
-
-    shootAction(_direction) {
-        this.laser1 = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 2, 0, Math.PI * 2, 0, 5.66), new THREE.MeshBasicMaterial({ color: "red" }));
-        this.laser1.position.copy(this._position);
-        // this.laser1.translateX(-1.1);
-        this.laser1.rotation.copy(this.group.rotation);
-
-        //this.lasers1.push(this.laser1);
-        const laserBoundingBox = new THREE.Box3().setFromObject(this.laser1);
-        this.lasers1.push({ mesh: this.laser1, boundingBox: laserBoundingBox });
-        this._scene.add(this.laser1);
-
-    }
-
-    detectLaserCollisions() {
-        this.lasers1.forEach(laser => {
-            this.enemies.forEach(enemySpaceship => {
-                const box = new THREE.Box3().setFromObject(enemySpaceship.boundingBox);
-                if (laser.boundingBox.intersectsBox(box)) {
-                    enemySpaceship.health -= 40;
-                    console.log(enemySpaceship.health);
-                    if (enemySpaceship.health <= 0) {
-                        enemySpaceship.collided = true;
-                        enemySpaceship.Remove(this._scene);
-                    }
-                }
-            });
-        });
-    }
-
-    detectLaserCollisions2() {
-        this.lasers1.forEach(laser => {
-            this.bases.forEach(base => {
-                const box = new THREE.Box3().setFromObject(base.boundingBox);
-                if (laser.boundingBox.intersectsBox(box)) {
-                    base.health -= 5;
-                    console.log(base.health);
-                    if (base.health <= 0) {
-                        base.collided = true;
-                        base.Remove(this._scene);
-                    }
-                }
-            });
-        });
     }
 
 

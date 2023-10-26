@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import loadingManager from './loadingManager.js';
+import { enemyLasers } from './lasers.js';
 
 
 class enemySpaceship {
@@ -12,7 +13,7 @@ class enemySpaceship {
         this.y = y;
         this.z = z;
         this.health = 100;
-        this.lasers = [];
+        this.lasers = new enemyLasers(this.scene)
         this.shooting = 0;
         this.count = 0;
         this.collided = false;
@@ -58,16 +59,24 @@ class enemySpaceship {
         this.group.add(this.boundingBox);
     }
 
-    Remove(scene) {
-        scene.remove(this.group);
-        this.group.traverse((object) => {
-            if (object.isMesh) {
-                object.geometry.dispose();
-                object.material.dispose();
-            }
-        });
-    }
+    delete(){
+        this.scene.remove(this.group);
+        this.scene.remove(this.boundingBox);
 
+        for (var i=this.lasers.lasers.length-1; i>=0 ; i--)
+        {
+            this.lasers.lasers[i].delete();
+        }
+
+        this.group.children.forEach(child => {
+            if (child.geometry) {
+                child.geometry.dispose();
+            }
+            if (child.material) {
+                child.material.dispose();
+            }
+         });
+        }
 
     // loads the enemy spaceship in the world
     loadSpaceshipLevel1() {
@@ -134,6 +143,8 @@ class enemySpaceship {
 
     update(target) {
 
+        this.lasers.update(target)
+
         const rotationMatrix = new THREE.Matrix4();
         const targetQuaternion = new THREE.Quaternion();
 
@@ -141,21 +152,21 @@ class enemySpaceship {
         this.group.getWorldDirection(direction);
         const raycaster = new THREE.Raycaster()
         raycaster.far = 100;
-        raycaster.near = 4;
+        raycaster.near = 1;
         raycaster.set(this.group.position, direction);
 
-        const intersections = raycaster.intersectObject(this.scene, true);
+        const intersections = raycaster.intersectObject(target.group, true);
 
         if (intersections.length != 0) {
 
             if (this.count == 0 && intersections[0].distance < 5) {
-                this.count = 20;
+                this.count = 20; 
             }
 
             else if (intersections.some(e => e.object.userData.name == "player")) {
                 if (this.shooting == 0) {
-                    this.shootAction(direction)
-                    this.shooting = 5;
+                    this.lasers.shoot("green", this.group.position, this.group.rotation)
+                    this.shooting = 0;
                 }
                 else {
                     this.shooting = this.shooting - 1;
@@ -177,31 +188,9 @@ class enemySpaceship {
             this.group.quaternion.rotateTowards(targetQuaternion, step);
         }
 
-        for (let i = 0; i < this.lasers.length; i++) {
-            let laser = this.lasers[i]
-            const laser_direction = new THREE.Vector3();
-            laser.getWorldDirection(laser_direction)
-            laser.position.addScaledVector(laser_direction, 2);
-        }
-        this.group.position.addScaledVector(direction, 0.1);
-        //this.detectLaserCollisions(target)
+        this.group.position.addScaledVector(direction, 0.3);
     }
 
-    //functions
-    shootAction(_direction) {
-        this.laser1 = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), new THREE.MeshBasicMaterial({ color: "green" }));
-        this.laser1.position.copy(this.group.position);
-        this.laser1.rotation.copy(this.group.rotation);
-        this.scene.add(this.laser1);
-        this.lasers.push(this.laser1)
-    }
-
-    /*detectLaserCollisions(target) {
-        for (var i =0; i< this.lasers.length; i++)
-        {
-            console.log(this.lasers[i].boundingBox);
-        }
-    }*/
 }
 
 export default enemySpaceship;

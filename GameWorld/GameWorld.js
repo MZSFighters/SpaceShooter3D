@@ -223,7 +223,7 @@ class GameWorld {
       for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
         if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyBases[i].ships[j])) {
           console.log("Spaceship collided with an enemy spaceship");
-          this.enemyBases[i].ships[j].Remove(this.scene);
+          this.enemyBases[i].ships[j].health =0;
           const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
           const x = this.enemyBases[i].ships.splice(index, 1);
           this.sound.impact.play();
@@ -275,9 +275,7 @@ class GameWorld {
           if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.earthBoundingSphere)) {
             console.log("An enemy spaceship collided with the earth");
             this.sound.impact.play();
-            this.enemyBases[i].ships[j].Remove(this.scene);
-            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
-            const x = this.enemyBases[i].ships.splice(index, 1);
+            this.enemyBases[i].ships[j].health =0;
           }
         }
       }
@@ -420,8 +418,7 @@ class GameWorld {
       for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
         if (this.CollisionDetection.checkAsteroidCollision(this.enemyBases[i].ships[j])) {
           this.sound.impact.play();
-          console.log("An enemy spaceship collided with an asteroid");
-          this.enemyBases[i].ships[j].Remove(this.scene);
+          this.enemyBases[i].ships[j].health=0
           const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
           const x = this.enemyBases[i].ships.splice(index, 1);
         }
