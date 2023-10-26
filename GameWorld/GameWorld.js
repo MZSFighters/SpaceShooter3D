@@ -148,6 +148,9 @@ class GameWorld {
       // updating the spaceship's position
       this.spaceship.update();
 
+      // updating the warning screen
+      this.spaceship.Warning();
+
       this.spawningpowerups.update();
 
       if (this.spaceship.boosting && this.boostTime < 300){

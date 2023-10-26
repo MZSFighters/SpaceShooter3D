@@ -1,32 +1,50 @@
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Space Shooter Game</title>
-
-    <script>
-        document.getElementById('closeLink').addEventListener('click', function (e) {
-            e.preventDefault();
-            window.close();
-        });
-    </script>
+    <style>
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            display: none;
+        }
+        .overlay p {
+            color: white;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <nav>
-    <h1>Welcome to the Space Shooter Game</h1>
-    
-    <p>Journey through the galaxy with our action-packed space shooter game. Choose from multiple levels with increasing difficulty to challenge your skills. Are you ready to save the universe?</p>
-    
-    <ul>
-        <li><a href="webpages/selectLevel.html">Play Game</a></li>
-        <li><a href="webpages/how_to_play.html">How to Play</a></li>
-        <li><a href="webpages/options.html">Options</a></li>
-        <li><a href="webpages/leaderboard.html">Leaderboard</a></li>
-		<li><a href="webpages/credits.html">Credits</a></li>
-        <li><a href="#" id="closeLink">Exit Game</a></li>
-    </ul>
+        <h1>Welcome to the Space Shooter Game</h1>
+        <p>Journey through the galaxy with our action-packed space shooter game. Choose from multiple levels with increasing difficulty to challenge your skills. Are you ready to save the universe?</p>
+        <ul>
+            <li><a href="webpages/selectLevel.html">Play Game</a></li>
+            <li><a href="webpages/how_to_play.html">How to Play</a></li>
+            <li><a href="webpages/credits.html">Credits</a></li>
+            <li><a href="#" id="exitGameLink">Exit Game</a></li>
+        </ul>
     </nav>
+    <div class="overlay" id="overlay">
+        <p>You have successfully exited the game, you can now close the tab</p>
+    </div>
+    <script>
+        document.getElementById("exitGameLink").addEventListener("click", function(e) {
+            e.preventDefault();
+            document.getElementById("overlay").style.display = "block";
+        });
+    </script>
 </body>
 </html>

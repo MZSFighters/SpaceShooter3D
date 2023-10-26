@@ -219,6 +219,18 @@ class Spaceship {
         winnerText.style.display = 'block';
     }
 
+    // Warning screen
+    Warning(){
+        const warningScreen = document.querySelector('.warning');
+        if (this.health > 0 && this.health < 30) {
+            console.log('Warning screen');
+            warningScreen.style.display = 'block';   
+        }
+        else{
+            warningScreen.style.display = 'none';
+        }
+    }
+
 }
 
 export default Spaceship;

@@ -156,7 +156,7 @@ p{
 
 
 .game-over{
-    background-image: url('assets/images/space_skybox/bottom.png');
+    background-image: url('assets/images/GameOver_WinningScreen_Images/Level3.png');
     background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
@@ -210,7 +210,7 @@ p{
 }
 
 .winner{
-    background-image: url('assets/images/space_skybox/bottom.png');
+    background-image: url('assets/images/GameOver_WinningScreen_Images/Level3.png');
     background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
