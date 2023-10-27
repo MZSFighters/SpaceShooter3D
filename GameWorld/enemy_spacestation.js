@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import loadingManager from './loadingManager.js';
 import enemySpaceship from './enemy_spaceship.js';
 import showFlames from './show_flames.js';
+import Sound from './sound.js';
 
 
 class enemySpacestation {
