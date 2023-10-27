@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import Sound from './sound.js';
 
 export class Laser
 {
@@ -40,11 +41,14 @@ export class Laser
 
 export class Lasers
 {
-    constructor(scene)
+    constructor(scene, camera)
     {
         this.scene = scene;
         this.lasers =[];
         this.clock = new THREE.Clock();
+        //initialize sound
+        this.sound = new Sound(camera);
+       
     }
 
     shoot(colour, position, rotation)
@@ -53,7 +57,7 @@ export class Lasers
         this.lasers.push(laser);
         this.scene.add(laser.mesh);
         this.scene.add(laser.boundingBox);
-
+        this.sound.shoot.play();
     }
 
     
@@ -112,11 +116,12 @@ export class Lasers
 
 export class enemyLasers
 {
-    constructor(scene)
+    constructor(scene, camera)
     {
         this.scene = scene;
         this.lasers =[];
         this.clock = new THREE.Clock();
+        this.sound = new Sound(camera);
     }
 
     shoot(colour, position, rotation)
@@ -125,6 +130,7 @@ export class enemyLasers
         this.lasers.push(laser);
         this.scene.add(laser.mesh);
         this.scene.add(laser.boundingBox);
+        this.sound.shoot.play();
     }
 
     update(target)

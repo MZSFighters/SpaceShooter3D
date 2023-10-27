@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import loadingManager from './loadingManager.js';
 import ControllerInput from './controllerInput.js';
-import Sound from './sound.js';
 import Shield from './shield.js';
 import Lasers from './lasers.js'
 
@@ -25,7 +24,7 @@ class Spaceship {
         this.bindAttriAndUi();
 
         //shooting
-        this.lasers = new Lasers(this.scene);
+        this.lasers = new Lasers(this.scene, camera);
 
         // velocity-acceleration business
         this._position = this.group.position;
@@ -50,9 +49,6 @@ class Spaceship {
         const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false});     // change it to true to see the bounding object
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
         this.group.add(this.boundingBox);
-
-        //initialize sound
-        this.sound = new Sound(camera);
 
         //initialize shield
         this.shieldReal = new Shield(scene);
@@ -133,7 +129,6 @@ class Spaceship {
 
         if (keys.space) {
             this.lasers.shoot("red", this.group.position, this.group.rotation);
-            this.sound.shoot.play();
         }
 
         if (keys.forward) {

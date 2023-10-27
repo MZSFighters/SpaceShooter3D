@@ -5,7 +5,7 @@ import { enemyLasers } from './lasers.js';
 
 
 class enemySpaceship {
-    constructor(scene, x, y, z, level) {
+    constructor(scene, x, y, z, level, camera) {
         this.group = new THREE.Group();
         this.scene = scene;
         this.level = level;
@@ -13,7 +13,7 @@ class enemySpaceship {
         this.y = y;
         this.z = z;
         this.health = 100;
-        this.lasers = new enemyLasers(this.scene)
+        this.lasers = new enemyLasers(this.scene, camera)
         this.shooting = 0;
         this.count = 0;
         this.collided = false;

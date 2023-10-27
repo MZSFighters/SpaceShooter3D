@@ -16,12 +16,12 @@ class Sound {
         this.loadAudio();
     }
 
-    loadAudio(){
+    loadBackground(){
         //Loader to load all audio files
         this.audioLoader = new THREE.AudioLoader();
-    
-        //Here we can load multiple audios with the same loader
-        this.audioLoader.load(
+
+         //Here we can load multiple audios with the same loader
+         this.audioLoader.load(
             './assets/sound/space_line-27593.mp3', 
             (buffer) => {
             this.backgroundSound.setBuffer(buffer);
@@ -29,6 +29,25 @@ class Sound {
             this.backgroundSound.setVolume(0.5);
             this.backgroundSound.play();
        });
+
+       this.audioLoader.load(
+        './assets/sound/scary-swoosh-142323.mp3', 
+        (buffer) => {
+        this.hype.setBuffer(buffer);
+        this.hype.setLoop(false);
+        this.hype.setVolume(1);
+        this.hype.play();
+    });
+
+
+
+    }
+
+    loadAudio(){
+        //Loader to load all audio files
+        this.audioLoader = new THREE.AudioLoader();
+    
+       
     
     
        
@@ -41,16 +60,7 @@ class Sound {
             this.impact.setVolume(1);
         });
     
-        this.audioLoader.load(
-            './assets/sound/scary-swoosh-142323.mp3', 
-            (buffer) => {
-            this.hype.setBuffer(buffer);
-            this.hype.setLoop(false);
-            this.hype.setVolume(1);
-            this.hype.play();
-        });
-    
-    
+       
         this.audioLoader.load(
             './assets/sound/fire-magic-6947.mp3', 
             (buffer) => {

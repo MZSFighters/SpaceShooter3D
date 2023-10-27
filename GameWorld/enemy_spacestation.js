@@ -5,8 +5,9 @@ import enemySpaceship from './enemy_spaceship.js';
 
 
 class enemySpacestation {
-  constructor(scene, x, y, z, level) {
+  constructor(scene, x, y, z, level, camera) {
     this.scene = scene;
+    this.camera = camera;
     this.level = level;
     this.x = x;
     this.y = y;
@@ -152,7 +153,7 @@ class enemySpacestation {
 
     if (this.ships.length <1 && this.health > 0)
     {
-      this.ships.push(new enemySpaceship(this.scene ,this.x+10+this.ships.length, this.y+5, this.z, this.level ))
+      this.ships.push(new enemySpaceship(this.scene ,this.x+10+this.ships.length, this.y+5, this.z, this.level, this.camera ))
     }
 
     for (var i = this.ships.length -1; i>=0; i--)
