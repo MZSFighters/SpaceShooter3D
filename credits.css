@@ -1,0 +1,61 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('assets/images/space_skybox/bottom.png');
+    background-size: cover;
+    background-repeat: repeat;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 72px;
+    background: linear-gradient(to right, #2486e2, #ab5ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    background: linear-gradient(to right, #2486e2, #ab5ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+    font-weight: bold;
+    font-size: 34px;
+}
+
+.levels ul {
+    list-style: none;
+    display: flex;
+    z-index: 2;
+    position: relative;
+    gap: 2rem;
+}
+
+h2 {
+    font-size: 25px;
+    background: linear-gradient(to right, #2486e2, #ab5ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
