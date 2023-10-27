@@ -16,6 +16,7 @@ class Spaceship {
         this.health = 100;
         this.shield = 0;
         this.boost = 0;
+        this.slow = 0;
         this.loadSpaceship();
         this.backlightIntensity = 0;
         this.addBackLights();
@@ -35,6 +36,7 @@ class Spaceship {
         this.yAcceleration = 0.04;
         this.maxYVelocity = 1;
         this.boosting = false;
+        this.slowSpeed = false;
         // spaceship laser constructor values
         this.clock = new THREE.Clock();
         this.delta = 0;
@@ -42,6 +44,7 @@ class Spaceship {
 
         // controller input listeners
         this.controller = new ControllerInput(this.group);
+        this.initMouseWheelListener();
         scene.add(this.group);
 
         // bounding box of the spaceship for collision detection 
@@ -77,9 +80,38 @@ class Spaceship {
         this.maxYVelocity = 1;
         this.boosting = false;
         this.boost = 0;
+        this.slowSpeed = false;
+        this.slow = 0;
         this.backlight.color.set(0xFF0000);
         this.backlight1.color.set(0xFF0000);
         this.backlight2.color.set(0xFF0000);
+    }
+
+     // slow speed effects
+     applySlowSpeed() {
+        this.acceleration = this.acceleration / 2;
+        this.maxVelocity = this.maxVelocity / 2;
+        this.rotationSpeed = this.rotationSpeed / 2;
+        this.yAcceleration = this.yAcceleration / 2;
+        this.maxYVelocity = this.maxYVelocity / 2;
+        this.slowSpeed = true;
+        this.slow = 100;
+        this.backlight.color.set("green");
+        this.backlight1.color.set("green");
+        this.backlight2.color.set("green");
+    }
+
+     // mouse event listener for the scrollbar movement
+     initMouseWheelListener() {
+        const self = this;
+        window.addEventListener('wheel', function (e) {
+            if (e.deltaY > 0) {
+                self._velocity.y -= self.yAcceleration;
+            } else {
+                self._velocity.y += self.yAcceleration;
+            }
+            self._velocity.y = THREE.MathUtils.clamp(self._velocity.y, -self.maxYVelocity, self.maxYVelocity);
+        });
     }
 
     // adding the back boost lights

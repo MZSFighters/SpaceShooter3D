@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import loadingManager from './loadingManager';
 
 class SkySphere {
     constructor(scene, level){
         this.level = level;
         this.scene = scene;
+        this.skysphere = new THREE.Object3D();
 
         if (this.level == 2){
             this.setupSkyboxLevel2();
@@ -15,13 +17,13 @@ class SkySphere {
     }
 
     setupSkyboxLevel2() {
-        const spaceShipLoader = new GLTFLoader();
+        const spaceShipLoader = new GLTFLoader(loadingManager);
         spaceShipLoader.load(
             './assets/objects_level2/space_skydome/scene.gltf',
             (gltf) => {
-                const spaceShip = gltf.scene;
-                spaceShip.scale.set(600, 600, 600);
-                this.scene.add(spaceShip);
+                this.skysphere = gltf.scene;
+                this.skysphere.scale.set(600, 600, 600);
+                this.scene.add(this.skysphere);
             },
             (xhr) => {
                 // Loading progress callback
@@ -35,13 +37,13 @@ class SkySphere {
     }
 
     setupSkyboxLevel3() {
-        const spaceShipLoader = new GLTFLoader();
+        const spaceShipLoader = new GLTFLoader(loadingManager);
         spaceShipLoader.load(
             './assets/objects_level3/space_skysphere/scene.gltf',
             (gltf) => {
-                const spaceShip = gltf.scene;
-                spaceShip.scale.set(600, 600, 600);
-                this.scene.add(spaceShip);
+                this.skysphere = gltf.scene;
+                this.skysphere.scale.set(600, 600, 600);
+                this.scene.add(this.skysphere);
             },
             (xhr) => {
                 // Loading progress callback
@@ -52,6 +54,12 @@ class SkySphere {
                 console.error('Error loading GLTF model', error);
             }
         );
+    }
+
+    update(){
+        if (this.skysphere){
+            this.skysphere.rotation.y += 0.001;
+        }
     }
 }
 

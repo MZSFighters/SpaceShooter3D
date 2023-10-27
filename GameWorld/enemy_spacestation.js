@@ -105,7 +105,7 @@ class enemySpacestation {
   }
 
   loadSpaceStationLevel2() {
-    const spaceStationLoader = new GLTFLoader();
+    const spaceStationLoader = new GLTFLoader(loadingManager);
     spaceStationLoader.load(
       './assets/objects_level2/enemy_ufo/scene.gltf',
       (gltf) => {
@@ -125,7 +125,7 @@ class enemySpacestation {
   }
 
   loadSpaceStationLevel3() {
-    const spaceStationLoader = new GLTFLoader();
+    const spaceStationLoader = new GLTFLoader(loadingManager);
     spaceStationLoader.load(
       './assets/objects_level3/space_station/scene.gltf',
       (gltf) => {

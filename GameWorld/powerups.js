@@ -9,8 +9,8 @@ class powerUp {
         this.scene = scene;
         this.group = new THREE.Group();
         this.group.position.set(this.x, this.y, this.z);
-        const boundingBoxGeometry = new THREE.BoxGeometry(1, 1, 1);
-        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: true });     // change it to true to see the bounding object
+        const boundingBoxGeometry = new THREE.BoxGeometry(7, 7, 7);
+        const boundingBoxMaterial = new THREE.MeshBasicMaterial({color: "lime", transparent: true, opacity: 0.1, visible: true });     // change it to true to see the bounding object
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
 
         this.renderPowerUp();
@@ -20,7 +20,7 @@ class powerUp {
     // method that renders the power ups in the scene
     renderPowerUp() {
 
-        const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const cubeGeometry = new THREE.BoxGeometry(3, 3, 3);
         let cubeMaterials;
         // shield power up
         if (this.powerUpName == 'shield') {
@@ -55,6 +55,16 @@ class powerUp {
                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('./assets/images/health.png') }),   // Back side
             ];
         }
+        else if (this.powerUpName == 'slow'){
+            cubeMaterials = [
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('./assets/images/speed_slow.jpg') }), // Right side
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('./assets/images/speed_slow.jpg') }),  // Left side
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('./assets/images/speed_slow.jpg') }),   // Top side
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('./assets/images/speed_slow.jpg') }), // Bottom side
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('./assets/images/speed_slow.jpg') }),  // Front side
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('./assets/images/speed_slow.jpg') }),   // Back side
+            ];
+        }
         const cube = new THREE.Mesh(cubeGeometry, cubeMaterials);
         this.group.add(this.boundingBox);
         this.group.add(cube);
@@ -67,14 +77,17 @@ class powerUp {
             spaceship.bindAttriAndUi();
         }
         else if (this.powerUpName == 'health') {
-            console.log("Spacehsip collided with the health powerup")
+            console.log("Spaceship collided with the health powerup")
             spaceship.health = 100;
             spaceship.bindAttriAndUi();
+        }
+        else if (this.powerUpName == 'slow'){
+            console.log("Spaceship collided with the slow speed boost powerup");
+            spaceship.applySlowSpeed();
         }
         else {
             console.log("Spaceship collided with the speed boost powerup");
             spaceship.applyBoost();
-
         }
         scene.remove(this.group);
         this.group.traverse((object) => {

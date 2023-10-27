@@ -100,7 +100,7 @@ class enemySpaceship {
     }
 
     loadSpaceshipLevel2() {
-        const spaceShipLoader = new GLTFLoader();
+        const spaceShipLoader = new GLTFLoader(loadingManager);
         spaceShipLoader.load(
             './assets/objects_level2/enemy_spaceship/scene.gltf',
             (gltf) => {
@@ -121,7 +121,7 @@ class enemySpaceship {
     }
 
     loadSpaceshipLevel3() {
-        const spaceShipLoader = new GLTFLoader();
+        const spaceShipLoader = new GLTFLoader(loadingManager);
         spaceShipLoader.load(
             './assets/objects_level3/enemy_spaceship/scene.gltf',
             (gltf) => {
