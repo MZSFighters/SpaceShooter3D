@@ -33,16 +33,15 @@ void main() {
 }`;
 
 
+/*This class is a utility for creating linear interpolations between points.
+ It's used to interpolate values like alpha (transparency), color, and size of particles over their lifetime*/
 class LinearSpline {
   constructor(lerp) {
     this._points = [];
     this._lerp = lerp;
   }
-
-  AddPoint(t, d) {
-    this._points.push([t, d]);
-  }
-
+  
+  // Interpolates the value at time t using the interpolation function provided during construction.
   Get(t) {
     let p1 = 0;
 
@@ -64,10 +63,15 @@ class LinearSpline {
             this._points[p2][0] - this._points[p1][0]),
         this._points[p1][1], this._points[p2][1]);
   }
+
+  AddPoint(t, d) {
+    this._points.push([t, d]);
+  } 
 }
 
-
+// This class represents a explosion. It's responsible for generating, updating, and rendering particles.
 class Explosion {
+  // It sets up shaders, material, initial positions, and other properties for the particle system.
   constructor(params) {
     const uniforms = {
         diffuseTexture: {
@@ -132,13 +136,13 @@ class Explosion {
     this.UpdateGeometry();
   }
 
-
+  // Clears all particles
   Pause() {
-    this._particles.length = 0; // Clear all particles
+    this._particles.length = 0; 
   }
 
 
-
+  // Adds new particles to the system after some time.
   AddParticles(timeElapsed) {
     if (!this.gdfsghk) {
       this.gdfsghk = 0.0;
@@ -155,12 +159,11 @@ class Explosion {
       const initialY = this.initialY;
       const initialZ = this.initialZ;
 
-      // Rest of the code remains the same
       const speed = Math.random() * 1;
       const angle = Math.random() * Math.PI * 2;
-
       const maxRadius = 0.001;
       const radius = Math.random() * maxRadius;
+
       const initialPosition = new THREE.Vector3(
         Math.cos(angle) * radius + initialX,
         initialY,
@@ -169,7 +172,7 @@ class Explosion {
 
       const velocity = new THREE.Vector3(
         Math.cos(angle) * speed,
-        Math.random() * speed, //2 + 5,
+        Math.random() * speed,
         Math.sin(angle) * speed
       );
 
@@ -186,8 +189,7 @@ class Explosion {
     }
   }
   
-  
-
+  // Updates the geometry of the particle system based on the current state of particles.
   UpdateGeometry() {
     const positions = [];
     const sizes = [];
@@ -216,6 +218,7 @@ class Explosion {
     this._geometry.attributes.angle.needsUpdate = true;
   }
 
+  // Updates the state of existing particles, including their position, size, color, and alpha based on their lifetime.
   UpdateParticles(timeElapsed) {
     for (let p of this._particles) {
       p.life -= timeElapsed;
@@ -259,6 +262,9 @@ class Explosion {
     });
   }
 
+  /* This is the main update function that advances the particle system.
+   It adds new particles, updates existing ones, and updates the geometry. 
+   It's typically called in an animation loop with the time elapsed between frames.*/
   Step(timeElapsed) {
     this.AddParticles(timeElapsed);
     this.UpdateParticles(timeElapsed);
