@@ -14,6 +14,7 @@ import SkySphere from './skysphere';
 import Timer from './timer';
 import Sound from './sound';
 import LineAnimation from './line_animation';
+import showFlames from './show_flames';
 
 
 class GameWorld {
@@ -52,25 +53,25 @@ class GameWorld {
     if (this.level != 1) {
       this.skySphere = new SkySphere(this.scene, this.level);
     }
-
+    this.Flames = [];
     if (this.level == 1) {
       this.setupSkybox();
       this.planet = new PlanetLevelOne(this.scene);
-      this.enemyStationOne = new enemySpacestation(this.scene, -100, 50, -50, this.level, this.camera);
-      this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400, this.level, this.camera);
-      this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level, this.camera);
+      this.enemyStationOne = new enemySpacestation(this.scene, -100, 50, -50, this.level, this.camera,this.Flames);
+      this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400, this.level, this.camera,this.Flames);
+      this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level, this.camera,this.Flames);
     }
     else if (this.level == 2) {
       this.planet = new PlanetLevelTwo(this.scene);
-      this.enemyStationOne = new enemySpacestation(this.scene, 400, 50, 350, this.level, this.camera);
-      this.enemyStationTwo = new enemySpacestation(this.scene, -425, 100, 400, this.level, this.camera);
-      this.enemyStationThree = new enemySpacestation(this.scene, 200, 0, -450, this.level, this.camera);
+      this.enemyStationOne = new enemySpacestation(this.scene, 400, 50, 350, this.level, this.camera,this.Flames);
+      this.enemyStationTwo = new enemySpacestation(this.scene, -425, 100, 400, this.level, this.camera,this.Flames);
+      this.enemyStationThree = new enemySpacestation(this.scene, 200, 0, -450, this.level, this.camera,this.Flames);
     }
     else {
       this.planet = new PlanetLevelThree(this.scene);
-      this.enemyStationOne = new enemySpacestation(this.scene, -300, 0, -400, this.level, this.camera);
-      this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400, this.level, this.camera);
-      this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level, this.camera);
+      this.enemyStationOne = new enemySpacestation(this.scene, -300, 0, -400, this.level, this.camera,this.Flames);
+      this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400, this.level, this.camera,this.Flames);
+      this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level, this.camera,this.Flames);
     }
 
     // loading the 3 enemy station bases and adding them to the enemy bases list
@@ -85,9 +86,6 @@ class GameWorld {
     this.lines = new LineAnimation(this.scene, this.spaceship);
 
     this.powerups = [];
-    // this.powerups.push(new PowerUp(this.scene, 'shield', 0, 0, -10));
-    // this.powerups.push(new PowerUp(this.scene, 'health', -5, 0, -10));
-    // this.powerups.push(new PowerUp(this.scene, 'speed_boost', 5, 0, -10));
     this.spawningpowerups = new SpawningPowerups(this.scene, this.powerups);
 
     // creating the particles in background and adding lighting depending on the background
@@ -190,7 +188,15 @@ class GameWorld {
         this.lines.remove();
       }
 
-      
+      // Showing the Flames!!!
+      for (let i = 0; i < this.Flames.length; i++){
+        this.Flames[i].update();
+
+        if (this.Flames[i].finished && !this.Flames[i].explode){
+          const index = this.Flames.indexOf(this.Flames[i]);
+          const x = this.Flames.splice(index, 1);
+        }
+      }      
       
 
       //updating rearview camera, setting viewport
@@ -303,12 +309,8 @@ class GameWorld {
     // Spaceship-Power Up Collision
     for (let i = 0; i < this.powerups.length; i++) {
       if (this.CollisionDetection.checkCollision(this.spaceship, this.powerups[i])) {
-        //console.log("Spaceship collided with shield powerup");
-        //this.spaceship.shield = 100;
-        //this.spaceship.bindAttriAndUi();
         this.sound.power.play();
         this.powerups[i].update(this.spaceship,this.scene);
-        //this.powerups[i].Remove(this.scene);
         const index = this.powerups.indexOf(this.powerups[i]);
         const x = this.powerups.splice(index, 1);
       }

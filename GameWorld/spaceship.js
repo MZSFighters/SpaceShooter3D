@@ -49,7 +49,7 @@ class Spaceship {
 
         // bounding box of the spaceship for collision detection 
         const boundingBoxGeometry = new THREE.BoxGeometry(0.7 * 3, 0.5 *2, 0.7 * 4.5);
-        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: true});     // change it to true to see the bounding object
+        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false});     // change it to true to see the bounding object
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
         this.group.add(this.boundingBox);
 

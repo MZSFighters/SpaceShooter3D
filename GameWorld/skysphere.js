@@ -22,7 +22,7 @@ class SkySphere {
             './assets/objects_level2/space_skydome/scene.gltf',
             (gltf) => {
                 this.skysphere = gltf.scene;
-                this.skysphere.scale.set(600, 600, 600);
+                this.skysphere.scale.set(800, 800, 800);
                 this.scene.add(this.skysphere);
             },
             (xhr) => {
@@ -42,7 +42,7 @@ class SkySphere {
             './assets/objects_level3/space_skysphere/scene.gltf',
             (gltf) => {
                 this.skysphere = gltf.scene;
-                this.skysphere.scale.set(600, 600, 600);
+                this.skysphere.scale.set(800, 800, 800);
                 this.scene.add(this.skysphere);
             },
             (xhr) => {

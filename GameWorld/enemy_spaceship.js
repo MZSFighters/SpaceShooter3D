@@ -17,6 +17,7 @@ class enemySpaceship {
         this.shooting = 0;
         this.count = 0;
         this.collided = false;
+        this.exploded = false;
         this.clock = new THREE.Clock();
 
         if (this.level == 1) {
