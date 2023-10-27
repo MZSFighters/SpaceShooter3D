@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import loadingManager from './loadingManager.js';
 import ControllerInput from './controllerInput.js';
-import Sound from './sound.js';
 import Shield from './shield.js';
 import Lasers from './lasers.js'
 
@@ -12,10 +11,11 @@ class Spaceship {
         this.scene = scene;
         this.healthUi = document.getElementById('health-bar');
         this.shieldUi = document.getElementById('sheld-bar');
-        //this.boostUi = document.getElementById('speed-bar');
+        this.boostUi = document.getElementById('speed-bar');
         this.group = new THREE.Group();
         this.health = 100;
         this.shield = 0;
+        this.boost = 0;
         this.loadSpaceship();
         this.backlightIntensity = 0;
         this.addBackLights();
@@ -24,14 +24,14 @@ class Spaceship {
         this.bindAttriAndUi();
 
         //shooting
-        this.lasers = new Lasers(this.scene);
+        this.lasers = new Lasers(this.scene, camera);
 
         // velocity-acceleration business
         this._position = this.group.position;
         this._velocity = new THREE.Vector3();
-        this.acceleration = 0.02;
+        this.acceleration = 0.04;       // 0.02
         this.maxVelocity = 1;
-        this.rotationSpeed = 0.02;
+        this.rotationSpeed = 0.03;      // 0.02
         this.yAcceleration = 0.04;
         this.maxYVelocity = 1;
         this.boosting = false;
@@ -46,12 +46,9 @@ class Spaceship {
 
         // bounding box of the spaceship for collision detection 
         const boundingBoxGeometry = new THREE.BoxGeometry(0.7 * 3, 0.7 * 2, 0.7 * 4.5);
-        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false });     // change it to true to see the bounding object
+        const boundingBoxMaterial = new THREE.MeshBasicMaterial({ visible: false});     // change it to true to see the bounding object
         this.boundingBox = new THREE.Mesh(boundingBoxGeometry, boundingBoxMaterial);
         this.group.add(this.boundingBox);
-
-        //initialize sound
-        this.sound = new Sound(camera);
 
         //initialize shield
         this.shieldReal = new Shield(scene);
@@ -59,22 +56,30 @@ class Spaceship {
 
     // speed boost effects
     applyBoost() {
-        this.acceleration = 0.04;
-        this.maxVelocity = 2;
-        this.rotationSpeed = 0.04;
-        this.yAcceleration = 0.08;
-        this.maxYVelocity = 2;
+        this.acceleration = this.acceleration * 2;
+        this.maxVelocity = this.maxVelocity * 2;
+        this.rotationSpeed = this.rotationSpeed * 2;
+        this.yAcceleration = this.yAcceleration * 2;
+        this.maxYVelocity = this.maxYVelocity * 2;
         this.boosting = true;
+        this.boost = 100;
+        this.backlight.color.set("orange");
+        this.backlight1.color.set("orange");
+        this.backlight2.color.set("orange");
     }
 
     // reset boost effects
-    removeBoost(){
-        this.acceleration = 0.02;
+    removeBoost() {
+        this.acceleration = 0.04;
         this.maxVelocity = 1;
-        this.rotationSpeed = 0.02;
+        this.rotationSpeed = 0.03;
         this.yAcceleration = 0.04;
         this.maxYVelocity = 1;
         this.boosting = false;
+        this.boost = 0;
+        this.backlight.color.set(0xFF0000);
+        this.backlight1.color.set(0xFF0000);
+        this.backlight2.color.set(0xFF0000);
     }
 
     // adding the back boost lights
@@ -124,7 +129,6 @@ class Spaceship {
 
         if (keys.space) {
             this.lasers.shoot("red", this.group.position, this.group.rotation);
-            this.sound.shoot.play();
         }
 
         if (keys.forward) {
@@ -152,7 +156,7 @@ class Spaceship {
         // adding and controlling the velocity as well as the intensity of the back lights
         this.group.position.add(this._velocity);
         const velocityFactor = this._velocity.length() / this.maxVelocity;
-        const intensity = Math.min(1, Math.max(0, velocityFactor));
+        const intensity = Math.min(30, 30 * Math.max(0, velocityFactor));
 
         // updating the point light intensity
         this.backlight.intensity = intensity;
@@ -165,21 +169,20 @@ class Spaceship {
         this._velocity.multiplyScalar(0.95);
         this._position.add(this._velocity);
 
-         //update shield position
-         this.shieldReal.sphere.position.copy(this._position);
-         this.shieldReal.frame.position.copy(this._position);
- 
-         //run shield when shield health is greater than zero
-         if(this.shield > 0){
-             this.shieldReal.shieldOn = true;
-         }
-         if(this.shield == 0){
-             this.shieldReal.shieldOn = false;
-         }
-         this.shieldReal.runShield();
+        //update shield position
+        this.shieldReal.sphere.position.copy(this._position);
+        this.shieldReal.frame.position.copy(this._position);
 
-        //this.detectLaserCollisions();
-        //this.detectLaserCollisions2();
+        //run shield when shield health is greater than zero
+        if (this.shield > 0) {
+            this.shieldReal.shieldOn = true;
+        }
+        if (this.shield == 0) {
+            this.shieldReal.shieldOn = false;
+        }
+        this.shieldReal.runShield();
+
+
     }
 
 
@@ -187,6 +190,7 @@ class Spaceship {
     bindAttriAndUi() {
         this.shieldUi.style.width = `${this.shield * 2}px`;
         this.healthUi.style.width = `${this.health * 2}px`;
+        this.boostUi.style.width = `${this.boost * 2}px`;
     }
 
     Remove(scene) {
@@ -208,6 +212,18 @@ class Spaceship {
     Winner() {
         const winnerText = document.querySelector('.winner');
         winnerText.style.display = 'block';
+    }
+
+    // Warning screen
+    Warning(){
+        const warningScreen = document.querySelector('.warning');
+        if (this.health > 0 && this.health < 30) {
+            console.log('Warning screen');
+            warningScreen.style.display = 'block';   
+        }
+        else{
+            warningScreen.style.display = 'none';
+        }
     }
 
 }

@@ -39,8 +39,7 @@ class GameWorld {
     this.timer = new Timer();
     //initialize sound
     this.sound = new Sound(this.camera);
-    this.sound.backgroundSound.play();
-    this.sound.hype.play();
+    this.sound.loadBackground();
   }
 
   setupCameras() {
@@ -60,21 +59,21 @@ class GameWorld {
     if (this.level == 1) {
       this.setupSkybox();
       this.planet = new PlanetLevelOne(this.scene);
-      this.enemyStationOne = new enemySpacestation(this.scene, -100, 50, -50, this.level);
-      this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400, this.level);
-      this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level);
+      this.enemyStationOne = new enemySpacestation(this.scene, -100, 50, -50, this.level, this.camera);
+      this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400, this.level, this.camera);
+      this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level, this.camera);
     }
     else if (this.level == 2) {
       this.planet = new PlanetLevelTwo(this.scene);
-      this.enemyStationOne = new enemySpacestation(this.scene, 400, 50, 350, this.level);
-      this.enemyStationTwo = new enemySpacestation(this.scene, -425, 100, 400, this.level);
-      this.enemyStationThree = new enemySpacestation(this.scene, 200, 0, -450, this.level);
+      this.enemyStationOne = new enemySpacestation(this.scene, 400, 50, 350, this.level, this.camera);
+      this.enemyStationTwo = new enemySpacestation(this.scene, -425, 100, 400, this.level, this.camera);
+      this.enemyStationThree = new enemySpacestation(this.scene, 200, 0, -450, this.level, this.camera);
     }
     else {
       this.planet = new PlanetLevelThree(this.scene);
-      this.enemyStationOne = new enemySpacestation(this.scene, -300, 0, -400, this.level);
-      this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400, this.level);
-      this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level);
+      this.enemyStationOne = new enemySpacestation(this.scene, -300, 0, -400, this.level, this.camera);
+      this.enemyStationTwo = new enemySpacestation(this.scene, 0, 100, 400, this.level, this.camera);
+      this.enemyStationThree = new enemySpacestation(this.scene, 300, 0, -150, this.level, this.camera);
     }
 
     // loading the 3 enemy station bases and adding them to the enemy bases list
@@ -148,10 +147,15 @@ class GameWorld {
       // updating the spaceship's position
       this.spaceship.update();
 
+      // updating the warning screen
+      this.spaceship.Warning();
+
       this.spawningpowerups.update();
 
       if (this.spaceship.boosting && this.boostTime < 300){
         this.boostTime += 1;
+        this.spaceship.boost -= (100/300);
+        this.spaceship.bindAttriAndUi();
       }
       else{
         this.spaceship.removeBoost();
