@@ -7,7 +7,7 @@ class Shield{
         this.material = new THREE.MeshBasicMaterial( { color: 0x00ffff } ); 
         this.sphere = new THREE.Mesh( this.geometry, this.material );
         this.sphere.material.transparent = true;
-        this.sphere.material.opacity = 0.5;
+        this.sphere.material.opacity = 0.2;
         this.sphere.material.visible = false;
         this.material1 = new THREE.MeshBasicMaterial( { color: 0x00ffff } ); 
         this.frame = new THREE.Mesh(this.geometry, this.material1);
