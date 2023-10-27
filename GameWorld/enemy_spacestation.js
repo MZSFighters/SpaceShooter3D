@@ -63,15 +63,6 @@ class enemySpacestation {
     }
 
   }
-  Remove(scene) {
-    scene.remove(this.group);
-    this.group.traverse((object) => {
-      if (object.isMesh) {
-        object.geometry.dispose();
-        object.material.dispose();
-      }
-    });
-  }
 
   delete(scene) {
     scene.remove(this.group);
