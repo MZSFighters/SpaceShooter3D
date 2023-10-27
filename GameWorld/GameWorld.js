@@ -469,6 +469,14 @@ class GameWorld {
       }
     }
 
+    if (this.spaceship.group.position.x > 800 || this.spaceship.group.position.x < -800 || this.spaceship.group.position.y > 800
+       || this.spaceship.group.position.y < -800 || this.spaceship.group.position.z > 800 || this.spaceship.group.position.z < -800){
+        console.log("You ran away");
+        this.spaceship.health = 0;
+        this.spaceship.bindAttriAndUi();
+        this.gameRunning = false;
+       }
+
   }
 }
 
