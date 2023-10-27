@@ -30,7 +30,8 @@ class GameWorld {
     this.setupCameras();
     this.setupScene();
     this.CollisionDetection = new CollisionDetection(this.scene);
-    this.boostTime = 0
+    this.boostTime = 0;
+    this.slowTime = 0;
     this.timer = new Timer();
     //initialize sound
     this.sound = new Sound(this.camera);
@@ -162,15 +163,29 @@ class GameWorld {
       this.spawningpowerups.update();
 
 
-      if (this.spaceship.boosting && this.boostTime < 300){
+      if (this.spaceship.boosting && this.spaceship.slowSpeed){
+        this.spaceship.removeBoost();
+        this.boostTime = 0;
+        this.slowTime = 0;
+        this.spaceship.bindAttriAndUi();
+      }
+      else if (this.spaceship.boosting && this.boostTime < 300){
         this.boostTime += 1;
         this.spaceship.boost -= (100/300);
         this.spaceship.bindAttriAndUi();
       }
+      else if (this.spaceship.slowSpeed && this.slowTime < 300){
+        this.slowTime += 1;
+        this.spaceship.slow -= (100/300);
+      }
       else{
         this.spaceship.removeBoost();
         this.boostTime = 0;
+        this.slowTime = 0;
       }
+
+      
+      
 
       //updating rearview camera, setting viewport
       // allows main camera and rear view camera toi be viewed at same time 
@@ -200,6 +215,9 @@ class GameWorld {
       this.renderer.setScissorTest(false);
 
 
+      if(this.level != 1 ){
+        this.skySphere.update();
+      }
 
       // updating enemy bases and their spaceships
       for (let i = 0; i < this.enemyBases.length; i++) {

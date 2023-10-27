@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import loadingManager from './loadingManager';
 
 class Asteroids {
     constructor(scene) {
@@ -11,7 +12,7 @@ class Asteroids {
     // creates the asteroid field and adds it to the scene
     loadAsteroids(scene) {
         const asteroidUrl = new URL('../assets/Asteroid/astroid1.gltf', import.meta.url);
-        const assetLoader = new GLTFLoader();
+        const assetLoader = new GLTFLoader(loadingManager);
 
         assetLoader.load(asteroidUrl.href, (gltf) => {
             const model = gltf.scene;

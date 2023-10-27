@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import loadingManager from '../loadingManager';
 
 class Planet {
     constructor(scene) {
@@ -37,7 +38,7 @@ class Planet {
     }
 
     createMoon(scene, x, y, z) {
-        const moonLoader = new GLTFLoader();
+        const moonLoader = new GLTFLoader(loadingManager);
         moonLoader.load(
             './assets/objects_level3/brethren_moons/scene.gltf',
             (gltf) => {
@@ -59,7 +60,7 @@ class Planet {
 
     // loading moon in the world
     loadMoon() {
-        const moonLoader = new GLTFLoader();
+        const moonLoader = new GLTFLoader(loadingManager);
         moonLoader.load(
             './assets/objects_level3/brethren_moons/scene.gltf',
             (gltf) => {
@@ -90,7 +91,7 @@ class Planet {
 
     // loading earth into the world
     loadEarth() {
-        const earthLoader = new GLTFLoader();
+        const earthLoader = new GLTFLoader(loadingManager);
         earthLoader.load(
             './assets/objects_level3/red_planet/scene.gltf',
             (gltf) => {
