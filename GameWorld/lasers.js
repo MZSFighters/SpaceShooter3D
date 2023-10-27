@@ -107,8 +107,8 @@ export class Lasers
                 } ) })
 
                 //move laser forwards
-                l.boundingBox.translateZ(-100 * this.delta)
-                l.mesh.translateZ(-100 * this.delta);
+                l.boundingBox.translateZ(-200 * this.delta)
+                l.mesh.translateZ(-200 * this.delta);
             })
     };
 }
@@ -153,14 +153,26 @@ export class enemyLasers
             
                 if (this.checkCollision(target, l))
                 {
-                    target.health -=1;
-                    console.log(target.health);
+                    if (target.shield !=0)
+                    {
+                        target.shield-=1;
+                    }
+                    else
+                    {
+                        target.health -=1;
+                    }
+
                     l.hit =true;
                 }
 
+
+                if (l.hit==false)
+                {
+                    l.boundingBox.translateZ(200 * this.delta)
+                    l.mesh.translateZ(200 * this.delta);
+                }
                 //move laser forwards
-                l.boundingBox.translateZ(100 * this.delta)
-                l.mesh.translateZ(100 * this.delta);
+
             })
     };
 

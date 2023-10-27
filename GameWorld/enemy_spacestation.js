@@ -65,14 +65,22 @@ class enemySpacestation {
 
   }
 
-  delete(scene) {
-    scene.remove(this.group);
-    this.group.traverse((object) => {
-      if (object.isMesh) {
-        object.geometry.dispose();
-        object.material.dispose();
+  deleteAllChildren(group) {
+    while (group.children.length > 0) {
+      const child = group.children[0]; // Get the first child
+      
+      group.remove(child); // Remove the child from the group
+      if (child instanceof THREE.Mesh) {
+        child.material.dispose();
       }
-    });
+      if (Object.hasOwn(child, 'geometry'))
+        child.geometry.dispose();
+    }
+  }
+
+  delete(scene) {
+    this.deleteAllChildren(this.group)
+    scene.remove(this.group);
   }
 
   // loads the space station in the world

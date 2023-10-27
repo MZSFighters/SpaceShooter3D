@@ -159,23 +159,26 @@ class enemySpaceship {
 
         if (intersections.length != 0) {
 
-            if (this.count == 0 && intersections[0].distance < 5) {
-                this.count = 20; 
+            if (this.count == 0 && intersections[0].distance < 20) {
+                this.count = 40; //move away form playeer for 40counts 
             }
 
-            else if (intersections.some(e => e.object.userData.name == "player")) {
+            if (intersections.some(e => e.object.userData.name == "player")) {
                 if (this.shooting == 0) {
                     if(this.level == 1){
                         this.lasers.shoot("lime", this.group.position, this.group.rotation);
+                        this.shooting = 20;
                     }
                     else if (this.level == 2){
                         this.lasers.shoot("yellow", this.group.position, this.group.rotation);
+                        this.shooting = 10;
                     }
                     else{
                         this.lasers.shoot("orange", this.group.position, this.group.rotation);
+                        this.shooting = 0;
                     }
                     
-                    this.shooting = 0;
+
                 }
                 else {
                     this.shooting = this.shooting - 1;
@@ -189,7 +192,17 @@ class enemySpaceship {
         }
         else {
             this.count = this.count - 1
-            targetQuaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI);
+            var target_worldPosition = new THREE.Vector3();
+            target.group.getWorldPosition(target_worldPosition);
+
+            var worldPosition = new THREE.Vector3();
+            this.group.getWorldPosition(worldPosition);
+
+            var directionVector = new THREE.Vector3();
+            directionVector.subVectors( worldPosition, target_worldPosition);
+
+            directionVector.normalize();
+            targetQuaternion.setFromAxisAngle(directionVector, Math.PI);
         }
 
         if (!this.group.quaternion.equals(targetQuaternion)) {

@@ -1,18 +1,13 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Spaceship from './spaceship';
 import PlanetLevelOne from './level_one/planet';
 import PlanetLevelTwo from './level_two/planet';
 import PlanetLevelThree from './level_three/planet';
-import EnemySpaceship from './enemy_spaceship';
-import PowerUp from './powerups';
 import SpawningPowerups from './spawning_powerups';
 import enemySpacestation from './enemy_spacestation';
 import Particles from './particles';
 import ThirdPersonCamera from './custom_cameras.js';
 import loadingManager from './loadingManager.js';
-import Asteroids from './asteroids';
 import CollisionDetection from './collisions';
 import Lights from './lighting';
 import SkySphere from './skysphere';
@@ -132,6 +127,20 @@ class GameWorld {
     if (this.gameRunning) {
       requestAnimationFrame(this.animate.bind(this));
 
+      for (var i=this.enemyBases.length-1; i>=0 ; i--)
+      {
+        var b = this.enemyBases[i]
+        if (b.health <=0 && b.ships.length ==0)
+        {
+          this.enemyBases.splice(i,1);
+        }
+      }
+
+      if (this.enemyBases.length ==0)
+      {
+        this.spaceship.Winner();  
+      }
+
       //start timer
       this.timer.startTime();
 
@@ -151,6 +160,7 @@ class GameWorld {
       this.spaceship.Warning();
 
       this.spawningpowerups.update();
+
 
       if (this.spaceship.boosting && this.boostTime < 300){
         this.boostTime += 1;
@@ -225,28 +235,44 @@ class GameWorld {
     // Spaceship-Enemy Spaceships Collision
     for (let i = 0; i < this.enemyBases.length; ++i) {
       for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
-        if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyBases[i].ships[j])) {
-          console.log("Spaceship collided with an enemy spaceship");
-          this.enemyBases[i].ships[j].health =0;
-          const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
-          const x = this.enemyBases[i].ships.splice(index, 1);
+
+        if (this.enemyBases[i].health > 0)
+        {
+          if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyBases[i].ships[j])) {
+            console.log("Spaceship collided with an enemy spaceship");
+            this.enemyBases[i].ships[j].health =0;
+            this.sound.impact.play();
+            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
+            if (this.spaceship.shield !=0)
+            {
+              this.spaceship.shield=0;
+            }
+            else{
+
+              this.spaceship.health = 0;
+              this.gameRunning = false;
+            }
+
+          }
+        }
+   
+      }
+    }
+
+    // Spaceship-Enemy Base Collisions
+    // 
+    for (let i = 0; i < this.enemyBases.length; i++) {
+      if (this.enemyBases[i].health > 0) //dont know why this work but it worked
+      {
+        if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyBases[i]) && this.spaceship._position.x != 0 ) {
+          console.log("Spaceship collided with an enemy base");
           this.sound.impact.play();
           this.spaceship.health = 0;
           this.spaceship.bindAttriAndUi();
           this.gameRunning = false;
         }
       }
-    }
 
-    // Spaceship-Enemy Base Collisions
-    for (let i = 0; i < this.enemyBases.length; i++) {
-      if (this.CollisionDetection.checkCollision(this.spaceship, this.enemyBases[i]) && this.spaceship._position.x != 0) {
-        console.log("Spaceship collided with an enemy base");
-        this.sound.impact.play();
-        this.spaceship.health = 0;
-        this.spaceship.bindAttriAndUi();
-        this.gameRunning = false;
-      }
     }
 
     // Spaceship-Power Up Collision
@@ -423,8 +449,6 @@ class GameWorld {
         if (this.CollisionDetection.checkAsteroidCollision(this.enemyBases[i].ships[j])) {
           this.sound.impact.play();
           this.enemyBases[i].ships[j].health=0
-          const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
-          const x = this.enemyBases[i].ships.splice(index, 1);
         }
       }
     }

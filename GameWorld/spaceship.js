@@ -123,7 +123,11 @@ class Spaceship {
     update() {
 
         this.lasers.update(this.bases);
-
+        
+        if (this.health <=0)
+        {
+            this.GameOver();
+        }
         // spaceship's movement event listeners
         const keys = this.controller._keys;
 
@@ -177,10 +181,12 @@ class Spaceship {
         if (this.shield > 0) {
             this.shieldReal.shieldOn = true;
         }
-        if (this.shield == 0) {
+        if (this.shield <= 0) {
             this.shieldReal.shieldOn = false;
         }
         this.shieldReal.runShield();
+
+        this.bindAttriAndUi();
 
 
     }
