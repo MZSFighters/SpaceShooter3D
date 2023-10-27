@@ -66,6 +66,8 @@ class enemySpacestation {
       this.group.add(this.boundingBox);
     }
 
+    this.sound = new Sound(camera);
+
   }
 
   deleteAllChildren(group) {
@@ -154,6 +156,7 @@ class enemySpacestation {
 
   update(target) {
     if (this.health <= 0) {
+      this.sound.impact.play();
       if (!this.exploded) {
         this.flame = new showFlames(this.scene, this.camera, this.group.position.x, this.group.position.y, this.group.position.z);
         this.flame.explode = true;
@@ -170,6 +173,7 @@ class enemySpacestation {
 
     for (var i = this.ships.length - 1; i >= 0; i--) {
       if (this.ships[i].health <= 0) {
+        this.sound.impact.play();
         if(!this.ships[i].exploded){
           this.flame = new showFlames(this.scene, this.camera, this.ships[i].group.position.x, this.ships[i].group.position.y, this.ships[i].group.position.z);
           this.flame.explode = true;
