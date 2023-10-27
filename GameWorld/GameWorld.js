@@ -13,6 +13,7 @@ import Lights from './lighting';
 import SkySphere from './skysphere';
 import Timer from './timer';
 import Sound from './sound';
+import LineAnimation from './line_animation';
 
 
 class GameWorld {
@@ -80,6 +81,8 @@ class GameWorld {
 
     // loading player spaceship
     this.spaceship = new Spaceship(this.scene, this.camera, this.enemyStationOne.ships, this.enemyBases);
+
+    this.lines = new LineAnimation(this.scene, this.spaceship);
 
     this.powerups = [];
     // this.powerups.push(new PowerUp(this.scene, 'shield', 0, 0, -10));
@@ -173,6 +176,8 @@ class GameWorld {
         this.boostTime += 1;
         this.spaceship.boost -= (100/300);
         this.spaceship.bindAttriAndUi();
+         //update lines
+         this.lines.update();
       }
       else if (this.spaceship.slowSpeed && this.slowTime < 300){
         this.slowTime += 1;
@@ -182,6 +187,7 @@ class GameWorld {
         this.spaceship.removeBoost();
         this.boostTime = 0;
         this.slowTime = 0;
+        this.lines.remove();
       }
 
       
