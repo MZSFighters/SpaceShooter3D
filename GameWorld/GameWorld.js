@@ -291,7 +291,6 @@ class GameWorld {
     }
 
     // Spaceship-Enemy Base Collisions
-    // 
     for (let i = 0; i < this.enemyBases.length; i++) {
       if (this.enemyBases[i].health > 0) //dont know why this work but it worked
       {
@@ -364,17 +363,13 @@ class GameWorld {
           if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.moonBoundingSphere)) {
             console.log("An enemy spaceship collided with the moon");
             this.sound.impact.play();
-            this.enemyBases[i].ships[j].Remove(this.scene);
-            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
-            const x = this.enemyBases[i].ships.splice(index, 1);
+            this.enemyBases[i].ships[j].health = 0;
           }
 
           if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.planetBoundingSphere)) {
             console.log("An enemy spaceship collided with the planet");
             this.sound.impact.play();
-            this.enemyBases[i].ships[j].Remove(this.scene);
-            const index = this.enemyBases[i].ships.indexOf(this.enemyBases[i].ships[j]);
-            const x = this.enemyBases[i].ships.splice(index, 1);
+            this.enemyBases[i].ships[j].health = 0;
           }
         }
       }
@@ -421,38 +416,30 @@ class GameWorld {
         for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
           // Enemy Spaceship-Moon One Collision
           if (this.CollisionDetection.checkPlanetCollisions(this.enemyBases[i].ships[j], this.planet.moonOneBoundingBox)) {
-            console.log("Spaceship collided with the first moon");
+            console.log("Enemy Spaceship collided with the first moon");
             this.sound.impact.play();
-            this.spaceship.health = 0;
-            this.spaceship.bindAttriAndUi();
-            this.gameRunning = false;
+            this.enemyBases[i].ships[j].health = 0;
           }
 
           // Enemy Spaceship-Moon Two Collision
           if (this.CollisionDetection.checkPlanetCollisions(this.enemyBases[i].ships[j], this.planet.moonTwoBoundingBox)) {
-            console.log("Spaceship collided with the second moon");
+            console.log("Enemy Spaceship collided with the second moon");
             this.sound.impact.play();
-            this.spaceship.health = 0;
-            this.spaceship.bindAttriAndUi();
-            this.gameRunning = false;
+            this.enemyBases[i].ships[j].health = 0;
           }
 
           // Enemy Spaceship-Moon Three Collision
           if (this.CollisionDetection.checkPlanetCollisions(this.enemyBases[i].ships[j], this.planet.moonThreeBoundingBox)) {
-            console.log("Spaceship collided with the third moon");
+            console.log("Enemy Spaceship collided with the third moon");
             this.sound.impact.play();
-            this.spaceship.health = 0;
-            this.spaceship.bindAttriAndUi();
-            this.gameRunning = false;
+            this.enemyBases[i].ships[j].health = 0;
           }
 
           // Enemy Spaceship-Planet Collision
           if (this.CollisionDetection.checkSphereCollision(this.enemyBases[i].ships[j], this.planet.planetBoundingSphere)) {
-            console.log("Spaceship collided with the planet");
+            console.log("Enemy Spaceship collided with the planet");
             this.sound.impact.play();
-            this.spaceship.health = 0;
-            this.spaceship.bindAttriAndUi();
-            this.gameRunning = false;
+            this.enemyBases[i].ships[j].health = 0;
           }
         }
 
@@ -462,7 +449,7 @@ class GameWorld {
 
     // Spaceship-Asteroids Collision
     if (this.CollisionDetection.checkAsteroidCollision(this.spaceship)) {
-      console.log("Spaceship collided with an asteroid")
+      console.log("Spaceship collided with an asteroid");
       this.sound.impact.play();
       this.spaceship.health = 0;
       this.spaceship.bindAttriAndUi();
@@ -474,6 +461,7 @@ class GameWorld {
     for (let i = 0; i < this.enemyBases.length; ++i) {
       for (let j = 0; j < this.enemyBases[i].ships.length; ++j) {
         if (this.CollisionDetection.checkAsteroidCollision(this.enemyBases[i].ships[j])) {
+          console.log("Enemy Spaceship collided with an asteroid");
           this.sound.impact.play();
           this.enemyBases[i].ships[j].health=0
         }
