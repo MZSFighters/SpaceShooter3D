@@ -53,7 +53,7 @@ class Lights {
         this.scene.add(directionalLight);
 
         // adding some ambient light to the scene
-        var ambientLight = new THREE.AmbientLight(0xFF0000, 0.3);
+        var ambientLight = new THREE.AmbientLight(0xFF0000, 0.5);
         this.scene.add(ambientLight);
     }
 }

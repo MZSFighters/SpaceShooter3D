@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import loadingManager from '../loadingManager';
 
 class Planet {
     constructor(scene) {
@@ -24,7 +25,7 @@ class Planet {
 
     // loading earth into the world
     loadEarth() {
-        const earthLoader = new GLTFLoader();
+        const earthLoader = new GLTFLoader(loadingManager);
         earthLoader.load(
             './assets/objects_level2/green_planet/scene.gltf',
             (gltf) => {
