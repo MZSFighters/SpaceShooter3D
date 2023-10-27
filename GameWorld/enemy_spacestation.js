@@ -151,7 +151,6 @@ class enemySpacestation {
   }
 
 
-
   update(target) {
     if (this.health <= 0) {
       if (!this.exploded) {

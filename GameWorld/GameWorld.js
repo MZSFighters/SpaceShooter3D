@@ -30,6 +30,15 @@ class GameWorld {
     this.gameRunning = true;
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1500);
     this.camera.useLogarithmicDepth = true;
+        // minimap scene
+    this.minimapScene = new THREE.Scene();
+    // variable for minimap
+    this.countPrev = 0;
+    this.countCurr = 0;
+    this.countFin = 3;
+    this.status = 0;
+    this.counter = 0;
+    this.setupMiniMapScene();
     this.setupCameras();
     this.setupScene();
     this.CollisionDetection = new CollisionDetection(this.scene);
@@ -45,6 +54,21 @@ class GameWorld {
     // default camera positioning for both cameras
     this.camera.position.z = 5;
     this.camera.position.y = 1;
+  }
+
+  setupMiniMapScene() {
+    if (this.level == 1) {
+      const minimapTexture = new THREE.TextureLoader().load("assets/images/GameOver_WinningScreen_Images/Level1.png");
+      this.minimapScene.background = minimapTexture;
+    }
+    else if (this.level == 2) {
+      const minimapTexture = new THREE.TextureLoader().load("assets/images/GameOver_WinningScreen_Images/Level2.png");
+      this.minimapScene.background = minimapTexture;
+    }
+    else if (this.level == 3) {
+      const minimapTexture = new THREE.TextureLoader().load("assets/images/GameOver_WinningScreen_Images/Level3.png");
+      this.minimapScene.background = minimapTexture;
+    }
   }
 
   setupScene() {
@@ -113,6 +137,47 @@ class GameWorld {
     // adding rear view camera as child to camera
     this.camera.add(this.rearViewCamera);
 
+        // minimap camera or radar
+    // const viewsize = 1000;
+    this.miniMapCamera = new THREE.OrthographicCamera(
+      window.innerWidth * 1.2 / -2,
+      window.innerWidth * 1.2 / 2,
+      window.innerHeight * 1.2 / 2,
+      window.innerHeight * 1.2 / -2,
+      1, 5000
+    )
+    // setting up and positioning minimap camera 
+    this.miniMapCamera.position.set(0, 500, 0);
+    this.miniMapCamera.lookAt(0, 0, 0);
+    this.minimapMainShip = new THREE.Mesh(new THREE.SphereGeometry(20), new THREE.MeshBasicMaterial({ color: 0x00ff00 }));
+
+    this.spaceshipWorldPos = new THREE.Vector3();
+    this.planetWorldPos = new THREE.Vector3();
+    this.spaceship.boundingBox.getWorldPosition(this.spaceshipWorldPos);
+    this.planet.group.getWorldPosition(this.planetWorldPos);
+    // player spaceship on minimap
+    this.minimapScene.add(this.minimapMainShip);
+    this.minimapMainShip.position.copy(this.spaceshipWorldPos);
+    // planet (with respect to map) on minimap 
+    this.minimapplanet = new THREE.Mesh(new THREE.SphereGeometry(60), new THREE.MeshBasicMaterial({ color: 0x0000FF }));
+    this.minimapScene.add(this.minimapplanet);
+    this.minimapplanet.position.copy(this.planetWorldPos);
+    // enemy stations (with respect to map) on minimap 
+    this.minimapStationPos = new THREE.Vector3();
+    this.minimapEnemyShipPos = new THREE.Vector3();
+    this.enemyBases.forEach(b => {
+      b.group.getWorldPosition(this.minimapStationPos);
+      this.minimapEnemyStation = new THREE.Mesh(new THREE.SphereGeometry(40), new THREE.MeshBasicMaterial({ color: 0xFF00FF }));
+      this.minimapScene.add(this.minimapEnemyStation);
+      this.minimapEnemyStation.position.copy(this.minimapStationPos);
+      // b.ships.forEach(ship => {
+      //   ship.group.getWorldPosition(this.minimapEnemyShipPos);
+      //   this.minimapEnemyShipPip = new THREE.Mesh(new THREE.SphereGeometry(60), new THREE.MeshBasicMaterial({ color: 0xFF0000 }));
+      //   this.scene.add(this.minimapEnemyShipPip);
+      //   this.minimapEnemyShipPip.position.copy(this.minimapEnemyShipPos);
+      // })
+    })
+
 
     //virtual listener for all audio effects in scene
     this.listener = new THREE.AudioListener();
@@ -124,6 +189,87 @@ class GameWorld {
     this.hype = new THREE.Audio(this.listener);
     this.fire = new THREE.Audio(this.listener);
     this.power = new THREE.Audio(this.listener);
+  }
+
+  updateMiniMap() {
+    // updating player spaceship position on minimap
+    this.position11 = new THREE.Vector3();
+    this.position12 = new THREE.Vector3();
+    this.spaceship.boundingBox.getWorldPosition(this.position11);
+    this.minimapMainShip.position.copy(this.position11);
+    console.log(this.countCurr);
+    console.log(this.countPrev);
+
+
+    // while (this.counter < 3) {
+    //   this.enemyBases.forEach( base => {
+    //     base.ships.forEach( ship => {
+    //       ship.group.getWorldPosition(this.minimapEnemyShipPos);
+    //       this.minimapEnemyShipPip = new THREE.Mesh(new THREE.SphereGeometry(20), new THREE.MeshBasicMaterial({ color: 0xFF0000 }));
+    //       this.minimapScene.add(this.minimapEnemyShipPip);
+    //       this.minimapEnemyShipPip.position.copy(this.minimapEnemyShipPos);
+    //     })
+    //   })
+    //   this.counter++;
+    // }
+
+    // updating enemy spaceship position on minimap
+    this.enemyBases.forEach(b => {
+      for (let j = 0; j < this.enemyBases.length-2; j++) {
+        console.log("j : "+j);
+        console.log("first for loop : curr, prev : " + this.countCurr + " " + this.countPrev + " poeslength " + b.ships.length);
+        if (b.ships.length > this.countPrev) {
+          this.countCurr = b.ships.length;
+          console.log("first ifififififififififififififififififififififififififififif statement : curr, prev : " + this.countCurr + " " + this.countPrev);
+          for (let i = this.countPrev; i < this.countCurr; i++) {
+            console.log("inside secondsecondsecondsecondseocndsecondsecond for loop : curr, prev : " + this.countCurr + " " + this.countPrev);
+            // this.minimapScene.remove(this.minimapEnemyShipPip);
+            b.ships[j].group.getWorldPosition(this.minimapEnemyShipPos);
+            this.minimapEnemyShipPip = new THREE.Mesh(new THREE.SphereGeometry(20), new THREE.MeshBasicMaterial({ color: 0xFF0000 }));
+            this.minimapScene.add(this.minimapEnemyShipPip);
+            this.minimapEnemyShipPip.position.copy(this.minimapEnemyShipPos);
+
+          }
+          this.countPrev = b.ships.length;
+        }
+      }
+    })
+
+    // this.enemyBases.forEach( base => {
+    //   base.ships.forEach( ship => {
+    //     if (ship.drawn == false) {
+    //       ship.group.getWorldPosition(this.minimapEnemyShipPos);
+    //       this.minimapEnemyShipPip = new THREE.Mesh(new THREE.SphereGeometry(60), new THREE.MeshBasicMaterial({ color: 0xFF0000 }));
+    //       this.minimapScene.add(this.minimapEnemyShipPip);
+    //       this.minimapEnemyShipPip.position.copy(this.minimapEnemyShipPos);
+          
+    //     }
+    //     ship.drawn = true;
+    //   })
+    // })
+
+    // for (let i = 0; i < this.enemyBases.length; i++) {
+    //   console.log("I AM HERE MOSSS V2")
+    //   this.enemyBases[i].group.getWorldPosition(this.minimapStationPos);
+    //   this.minimapEnemyStation.position.copy(this.minimapStationPos);
+    //   for (let j = 0; j < this.enemyBases.ships.length; j++) {
+    //     console.log("Ship number : "+this.enemyBases.ships[j] + " in station number : " + this.enemyBases[i]);
+    //     this.enemyBases.ships[j].group.getWorldPosition(this.minimapEnemyShipPos);
+    //     this.minimapEnemyShipPip.position.copy(this.minimapEnemyShipPos);
+    //   }
+    // }
+
+
+    this.enemyBases.forEach(c => {
+      console.log("I AM HERE MOSSS")
+      c.group.getWorldPosition(this.minimapStationPos);
+      this.minimapEnemyStation.position.copy(this.minimapStationPos);
+      c.ships.forEach(enemyship => {
+        enemyship.group.getWorldPosition(this.minimapEnemyShipPos);
+        this.minimapEnemyShipPip.position.copy(this.minimapEnemyShipPos);
+      })
+    })
+
   }
 
   animate() {
@@ -227,6 +373,29 @@ class GameWorld {
       this.renderer.render(this.scene, this.rearViewCamera);
       this.renderer.setScissorTest(false);
 
+    // Second Scissor for minimap 
+    this.renderer.setScissorTest(true);
+
+    this.renderer.setScissor(
+      window.innerWidth - this.insetWidth - 17,
+      window.innerHeight - this.insetHeight - 600,
+      this.insetWidth+2,
+      this.insetHeight+2
+    );
+
+    this.renderer.setClearColor( 0xffffff, 1 );
+    this.renderer.clearColor();
+
+    this.renderer.setViewport(
+      window.innerWidth - this.insetWidth - 16,
+      window.innerHeight - this.insetHeight - 599,
+      this.insetWidth,
+      this.insetHeight
+    );
+
+    this.renderer.render(this.minimapScene, this.miniMapCamera);
+    this.renderer.setScissorTest(false);
+
 
       if(this.level != 1 ){
         this.skySphere.update();
@@ -238,6 +407,7 @@ class GameWorld {
       }
 
       this.collisionDetection();
+      this.updateMiniMap();
 
     } else {
       //stop timer
