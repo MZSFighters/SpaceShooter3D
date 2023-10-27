@@ -22,13 +22,14 @@ class GameWorld {
 
     // initial setup
     this.canvas = document.querySelector('.webgl'); // Fix: Use '.webgl' to select the canvas element
-    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas});
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
     this.scene = new THREE.Scene();
     this.level = level;                             // level number
     this.gameRunning = true;
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1500);
+    this.camera.useLogarithmicDepth = true;
     this.setupCameras();
     this.setupScene();
     this.CollisionDetection = new CollisionDetection(this.scene);
@@ -101,7 +102,7 @@ class GameWorld {
       70,
       aspect,
       0.01,
-      1000
+      1500
     )
     // setting up rear view camera  
     this.rearViewCamera.position.set(0, 0, -8);
