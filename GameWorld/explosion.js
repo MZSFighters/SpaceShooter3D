@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const _VS = `
+const vertexShader = `
 uniform float pointMultiplier;
 
 attribute float size;
@@ -20,7 +20,7 @@ void main() {
   vColour = colour;
 }`;
 
-const _FS = `
+const fragmentShader = `
 
 uniform sampler2D diffuseTexture;
 
@@ -80,8 +80,8 @@ class Explosion {
 
     this._material = new THREE.ShaderMaterial({
         uniforms: uniforms,
-        vertexShader: _VS,
-        fragmentShader: _FS,
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
         blending: THREE.AdditiveBlending,
         depthTest: true,
         depthWrite: false,

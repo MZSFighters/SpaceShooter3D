@@ -230,6 +230,7 @@ class GameWorld {
       //stop timer
       this.timer.stopTime();
       this.spaceship.GameOver();
+      this.spaceship.Warning();
     }
   }
 

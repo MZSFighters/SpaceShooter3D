@@ -224,7 +224,7 @@ class Spaceship {
     }
 
 
-
+    // function to bind the ui bars with the spaceship's attributes
     bindAttriAndUi() {
         this.shieldUi.style.width = `${this.shield * 2}px`;
         this.healthUi.style.width = `${this.health * 2}px`;
@@ -258,6 +258,9 @@ class Spaceship {
         if (this.health > 0 && this.health < 30) {
             console.log('Warning screen');
             warningScreen.style.display = 'block';   
+        }
+        else if(this.health == 0){
+            warningScreen.style.display = 'none';
         }
         else{
             warningScreen.style.display = 'none';
