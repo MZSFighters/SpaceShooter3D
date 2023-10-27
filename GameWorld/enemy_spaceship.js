@@ -87,6 +87,10 @@ class enemySpaceship {
                 this.spaceShip = gltf.scene;
                 this.spaceShip.scale.set(0.5, 0.5, 0.5);
                 this.group.add(this.spaceShip);
+                this.spaceShip.traverse(
+                    function (object) {
+                        object.userData.name = "enemy"
+                    })
             },
             (xhr) => {
                 // Loading progress callback
@@ -108,6 +112,10 @@ class enemySpaceship {
                 this.spaceShip.scale.set(0.5, 0.5, 0.5);
                 //this.spaceShip.rotation.set(0, Math.PI, 0);
                 this.group.add(this.spaceShip);
+                this.spaceShip.traverse(
+                    function (object) {
+                        object.userData.name = "enemy"
+                    })
             },
             (xhr) => {
                 // Loading progress callback
@@ -128,6 +136,10 @@ class enemySpaceship {
                 this.spaceShip = gltf.scene;
                 this.spaceShip.scale.set(0.7, 0.7, 0.7);
                 this.group.add(this.spaceShip);
+                this.spaceShip.traverse(
+                    function (object) {
+                        object.userData.name = "enemy"
+                    })
             },
             (xhr) => {
                 // Loading progress callback
@@ -155,12 +167,12 @@ class enemySpaceship {
         raycaster.near = 1;
         raycaster.set(this.group.position, direction);
 
-        const intersections = raycaster.intersectObject(target.group, true);
+        const intersections = raycaster.intersectObject(target.group , true);
 
         if (intersections.length != 0) {
 
             if (this.count == 0 && intersections[0].distance < 20) {
-                this.count = 40; //move away form playeer for 40counts 
+                this.count = 40; 
             }
 
             if (intersections.some(e => e.object.userData.name == "player")) {
@@ -206,11 +218,11 @@ class enemySpaceship {
         }
 
         if (!this.group.quaternion.equals(targetQuaternion)) {
-            const step = 0.01;
+            const step = 0.01+ this.level/50;
             this.group.quaternion.rotateTowards(targetQuaternion, step);
         }
 
-        this.group.position.addScaledVector(direction, 0.3);
+        this.group.position.addScaledVector(direction, 0.5 + this.level/10);
     }
 
 }

@@ -143,6 +143,11 @@ class enemySpacestation {
     );
   }
 
+  getRandomInt(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+
 
   update(target) {
     if (this.health <= 0)
@@ -152,7 +157,7 @@ class enemySpacestation {
 
     if (this.ships.length <2 && this.health > 0)
     {
-      this.ships.push(new enemySpaceship(this.scene ,this.x, this.y , this.z, this.level, this.camera ))
+      this.ships.push(new enemySpaceship(this.scene ,this.x+ + this.getRandomInt(10,100), this.y+ this.getRandomInt(10,100) , this.z+ this.getRandomInt(10,100), this.level, this.camera ))
     }
 
     for (var i = this.ships.length -1; i>=0; i--)
